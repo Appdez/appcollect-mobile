@@ -1,11 +1,11 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
-
+import '../Model.dart';
 part 'Genre.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: 4)
-class Genre extends HiveObject {
+@HiveType(typeId: 2)
+class Genre extends Model {
   @HiveField(0)
   late String? uuid;
 

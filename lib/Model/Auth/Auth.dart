@@ -9,7 +9,7 @@ class Auth {
       'Content-Type': 'application/json'
     };
     var request = http.Request(
-        'GET', Uri.parse('https://www.biosp.sumburero.org/api/connected'));
+        'GET', Uri.parse('https://www.appio.sumburero.org/api/connected'));
     request.headers.addAll(headers);
 
     try {
@@ -33,7 +33,7 @@ class Auth {
       'Content-Type': 'application/json'
     };
     var request = http.Request(
-        'POST', Uri.parse('https://www.biosp.sumburero.org/api/login'));
+        'POST', Uri.parse('https://www.appio.sumburero.org/api/login'));
     request.body = json.encode({"email": email, "password": password});
     request.headers.addAll(headers);
 

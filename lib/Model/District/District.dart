@@ -1,11 +1,11 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-part 'ForwardedService.g.dart';
+import '../Model.dart';
+part 'District.g.dart';
 
 @JsonSerializable()
 @HiveType(typeId: 3)
-class ForwardedService extends HiveObject {
+class District extends Model {
   @HiveField(0)
   late String? uuid;
 
@@ -19,15 +19,13 @@ class ForwardedService extends HiveObject {
   @HiveField(3)
   @JsonKey(name: 'updated_at')
   late DateTime? updatedAt;
-
-  ForwardedService(
-      {required this.uuid,
+  District(
+      {this.uuid,
       required this.name,
       required this.createdAt,
       required this.updatedAt});
-  factory ForwardedService.fromJson(Map<String, dynamic> json) =>
-      _$ForwardedServiceFromJson(json);
-  Map<String, dynamic> toJson() => _$ForwardedServiceToJson(this);
+  factory District.fromJson(Map<String, dynamic> json) => _$DistrictFromJson(json);
+  Map<String, dynamic> toJson() => _$DistrictToJson(this);
 
   ///this method will prevent the override of toString
   String asDropdownString() {
@@ -37,7 +35,7 @@ class ForwardedService extends HiveObject {
   ///this method will prevent the override of toString
 
   ///custom comparing function to check if two users are equal
-  bool isEqual(ForwardedService model) {
+  bool isEqual(District model) {
     return this.uuid == model.uuid;
   }
 

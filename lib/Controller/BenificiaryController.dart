@@ -1,13 +1,13 @@
-import 'package:biospdatabase/Model/Benificiary/Benificiary.dart';
-import 'package:biospdatabase/Model/DocumentType/DocumentType.dart';
-import 'package:biospdatabase/Model/ForwardedService/ForwardedService.dart';
-import 'package:biospdatabase/Model/Genre/Genre.dart';
-import 'package:biospdatabase/Model/Neighborhood/Neighborhood.dart';
-import 'package:biospdatabase/Model/Provenace/Provenace.dart';
-import 'package:biospdatabase/Model/PurposeOfVisit/PurposeOfVisit.dart';
-import 'package:biospdatabase/Model/ReasonOpeningCase/ReasonOpeningCase.dart';
+
+
 import 'package:flutter/foundation.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
+import '../Model/Benificiary/Benificiary.dart';
+import '../Model/Benefit/Benefit.dart';
+import '../Model/District/District.dart';
+import '../Model/Genre/Genre.dart';
+import '../Model/ProjectArea/ProjectArea.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class Syncronization {
   static getToken() => Hive.box('token');
@@ -25,36 +25,26 @@ class Syncronization {
       Hive.box<Benificiary>('benificiaries');
 
   ///Settings of Aplicattion
-  static Box<DocumentType> getDocumentTypes() =>
-      Hive.box<DocumentType>('document_types');
+  static Box<Benefit> getBenefits() =>
+      Hive.box<Benefit>('benefit');
 
-  static Box<ForwardedService> getForwardedServices() =>
-      Hive.box<ForwardedService>('forwarded_services');
+  static Box<District> getDistricts() =>
+      Hive.box<District>('district');
 
   static Box<Genre> getGenres() => Hive.box<Genre>('genres');
 
-  static Box<Neighborhood> getNeighborhoods() =>
-      Hive.box<Neighborhood>('neighborhoods');
+  static Box<ProjectArea> getProjectAreas() =>
+      Hive.box<ProjectArea>('project_area');
 
-  static Box<Provenace> getProvenances() => Hive.box<Provenace>('provenances');
-
-  static Box<PurposeOfVisit> getProposeOfVisits() =>
-      Hive.box<PurposeOfVisit>('propose_of_visits');
-
-  static Box<ReasonOpeningCase> getReasonsOfOpeningCases() =>
-      Hive.box<ReasonOpeningCase>('reasons_of_opening_cases');
-
+ 
   ///Initialization of box storage
   static Future<void> boot() async {
     await Hive.initFlutter();
     Hive.registerAdapter(BenificiaryAdapter());
-    Hive.registerAdapter(DocumentTypeAdapter());
-    Hive.registerAdapter(ForwardedServiceAdapter());
+    Hive.registerAdapter(BenefitAdapter());
+    Hive.registerAdapter(DistrictAdapter());
     Hive.registerAdapter(GenreAdapter());
-    Hive.registerAdapter(NeighborhoodAdapter());
-    Hive.registerAdapter(ProvenaceAdapter());
-    Hive.registerAdapter(PurposeOfVisitAdapter());
-    Hive.registerAdapter(ReasonOpeningCaseAdapter());
+    Hive.registerAdapter(ProjectAreaAdapter());
     //
     await Hive.openBox<Benificiary>('createdBenificiaries');
     await Hive.openBox<Benificiary>('updatedBenificiaries');
@@ -63,13 +53,11 @@ class Syncronization {
     await Hive.openBox('token');
 
     ///Settings of Aplicattion
-    await Hive.openBox<DocumentType>('document_types');
-    await Hive.openBox<ForwardedService>('forwarded_services');
+    await Hive.openBox<Benefit>('benefit');
+    await Hive.openBox<District>('district');
     await Hive.openBox<Genre>('genres');
-    await Hive.openBox<Neighborhood>('neighborhoods');
-    await Hive.openBox<Provenace>('provenances');
-    await Hive.openBox<PurposeOfVisit>('propose_of_visits');
-    await Hive.openBox<ReasonOpeningCase>('reasons_of_opening_cases');
+    await Hive.openBox<ProjectArea>('project_area');
+
   }
 
   Benificiary? getBenificiary(String uuid) {

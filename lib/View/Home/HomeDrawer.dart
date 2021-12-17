@@ -1,6 +1,4 @@
-import 'package:biospdatabase/View/About/About.dart';
-import 'package:biospdatabase/View/Relatorio/RelatorioDiario.dart';
-import 'package:biospdatabase/View/SyncData/SyncData.dart';
+
 import 'package:flutter/material.dart';
 
 class HomeDrawer extends StatelessWidget {

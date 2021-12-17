@@ -1,24 +1,15 @@
-import 'package:biospdatabase/Model/Benificiary/Benificiary.dart';
-import 'package:biospdatabase/Model/DocumentType/DocumentType.dart';
-import 'package:biospdatabase/Model/ForwardedService/ForwardedService.dart';
-import 'package:biospdatabase/Model/Genre/Genre.dart';
-import 'package:biospdatabase/Model/Neighborhood/Neighborhood.dart';
-import 'package:biospdatabase/Model/Provenace/Provenace.dart';
-import 'package:biospdatabase/Model/PurposeOfVisit/PurposeOfVisit.dart';
-import 'package:biospdatabase/Model/ReasonOpeningCase/ReasonOpeningCase.dart';
-import 'package:biospdatabase/Controller/BenificiaryController.dart';
-import 'package:biospdatabase/View/FormComponents/DateComponent.dart';
-import 'package:biospdatabase/View/FormComponents/DateTimeComponent.dart';
-import 'package:biospdatabase/View/FormComponents/LabelComponent.dart';
-import 'package:biospdatabase/View/FormComponents/NumberComponent.dart';
-import 'package:biospdatabase/View/FormComponents/PhoneNumberComponent.dart';
-import 'package:biospdatabase/View/FormComponents/SelectComponent.dart';
-import 'package:biospdatabase/View/FormComponents/TextComponent.dart';
+
+import '../../View/FormComponents/DateTimeComponent.dart';
+import '../../View/FormComponents/LabelComponent.dart';
+import '../../View/FormComponents/PhoneNumberComponent.dart';
+import '../../View/FormComponents/SelectComponent.dart';
+import '../../View/FormComponents/TextComponent.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:dropdown_search2/dropdown_search2.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-
+import '../../Model/Benificiary/Benificiary.dart';
+import '../../Controller/BenificiaryController.dart';
 class BenificiaryForm extends StatefulWidget {
   const BenificiaryForm({Key? key, this.benificiaryForEdit}) : super(key: key);
   final Benificiary? benificiaryForEdit;

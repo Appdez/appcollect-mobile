@@ -1,9 +1,10 @@
-import 'package:biospdatabase/Model/Benificiary/Benificiary.dart';
-import 'package:biospdatabase/Controller/BenificiaryController.dart';
-import 'package:biospdatabase/View/BenificiaryForm/BenificiaryForm.dart';
-import 'package:biospdatabase/View/BenificiaryUI/ContentTile.dart';
+
+import '../../Controller/BenificiaryController.dart';
+import '../../View/BenificiaryForm/BenificiaryForm.dart';
+import '../../View/BenificiaryUI/ContentTile.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+
+import '../../Model/Benificiary/Benificiary.dart';
 
 class MobileTile extends StatefulWidget {
   const MobileTile({Key? key, required this.benificiary}) : super(key: key);
@@ -35,16 +36,6 @@ class _MobileTileState extends State<MobileTile> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        IconButton(
-                            onPressed: () {
-                              launch("sms:${benificiary.phone}");
-                            },
-                            icon: Icon(Icons.message)),
-                        IconButton(
-                            onPressed: () {
-                              launch("tel:${benificiary.phone}");
-                            },
-                            icon: Icon(Icons.call)),
                         IconButton(
                             onPressed: () {
                               Navigator.of(context).pop();

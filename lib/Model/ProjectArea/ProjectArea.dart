@@ -1,13 +1,14 @@
+import '../Model.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'ReasonOpeningCase.g.dart';
+part 'ProjectArea.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: 9)
-class ReasonOpeningCase extends HiveObject {
+@HiveType(typeId: 4)
+class ProjectArea extends Model {
   @HiveField(0)
-  late String uuid;
+  late String? uuid;
 
   @HiveField(1)
   late String name;
@@ -19,14 +20,13 @@ class ReasonOpeningCase extends HiveObject {
   @HiveField(3)
   @JsonKey(name: 'updated_at')
   late DateTime? updatedAt;
-  ReasonOpeningCase(
-      {required this.uuid,
+  ProjectArea(
+      {this.uuid,
       required this.name,
       required this.createdAt,
       required this.updatedAt});
-  factory ReasonOpeningCase.fromJson(Map<String, dynamic> json) =>
-      _$ReasonOpeningCaseFromJson(json);
-  Map<String, dynamic> toJson() => _$ReasonOpeningCaseToJson(this);
+  factory ProjectArea.fromJson(Map<String, dynamic> json) => _$ProjectAreaFromJson(json);
+  Map<String, dynamic> toJson() => _$ProjectAreaToJson(this);
 
   ///this method will prevent the override of toString
   String asDropdownString() {
@@ -36,7 +36,7 @@ class ReasonOpeningCase extends HiveObject {
   ///this method will prevent the override of toString
 
   ///custom comparing function to check if two users are equal
-  bool isEqual(ReasonOpeningCase model) {
+  bool isEqual(ProjectArea model) {
     return this.uuid == model.uuid;
   }
 

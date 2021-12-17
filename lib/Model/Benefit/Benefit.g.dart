@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'PurposeOfVisit.dart';
+part of 'Benefit.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PurposeOfVisitAdapter extends TypeAdapter<PurposeOfVisit> {
+class BenefitAdapter extends TypeAdapter<Benefit> {
   @override
-  final int typeId = 8;
+  final int typeId = 5;
 
   @override
-  PurposeOfVisit read(BinaryReader reader) {
+  Benefit read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PurposeOfVisit(
-      uuid: fields[0] as String,
+    return Benefit(
+      uuid: fields[0] as String?,
       name: fields[1] as String,
       createdAt: fields[2] as DateTime?,
       updatedAt: fields[3] as DateTime?,
@@ -25,7 +25,7 @@ class PurposeOfVisitAdapter extends TypeAdapter<PurposeOfVisit> {
   }
 
   @override
-  void write(BinaryWriter writer, PurposeOfVisit obj) {
+  void write(BinaryWriter writer, Benefit obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -44,7 +44,7 @@ class PurposeOfVisitAdapter extends TypeAdapter<PurposeOfVisit> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PurposeOfVisitAdapter &&
+      other is BenefitAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -53,9 +53,9 @@ class PurposeOfVisitAdapter extends TypeAdapter<PurposeOfVisit> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-PurposeOfVisit _$PurposeOfVisitFromJson(Map<String, dynamic> json) {
-  return PurposeOfVisit(
-    uuid: json['uuid'] as String,
+Benefit _$BenefitFromJson(Map<String, dynamic> json) {
+  return Benefit(
+    uuid: json['uuid'] as String?,
     name: json['name'] as String,
     createdAt: json['created_at'] == null
         ? null
@@ -66,8 +66,7 @@ PurposeOfVisit _$PurposeOfVisitFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$PurposeOfVisitToJson(PurposeOfVisit instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$BenefitToJson(Benefit instance) => <String, dynamic>{
       'uuid': instance.uuid,
       'name': instance.name,
       'created_at': instance.createdAt?.toIso8601String(),

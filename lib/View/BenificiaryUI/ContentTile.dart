@@ -1,7 +1,9 @@
-import 'package:biospdatabase/Model/Benificiary/Benificiary.dart';
-import 'package:biospdatabase/Controller/BenificiaryController.dart';
+
+import '../../Controller/BenificiaryController.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../Model/Benificiary/Benificiary.dart';
 
 class ContentTile extends StatefulWidget {
   const ContentTile({Key? key, required this.benificiary}) : super(key: key);

@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'Provenace.dart';
+part of 'District.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ProvenaceAdapter extends TypeAdapter<Provenace> {
+class DistrictAdapter extends TypeAdapter<District> {
   @override
-  final int typeId = 6;
+  final int typeId = 3;
 
   @override
-  Provenace read(BinaryReader reader) {
+  District read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Provenace(
-      uuid: fields[0] as String,
+    return District(
+      uuid: fields[0] as String?,
       name: fields[1] as String,
       createdAt: fields[2] as DateTime?,
       updatedAt: fields[3] as DateTime?,
@@ -25,7 +25,7 @@ class ProvenaceAdapter extends TypeAdapter<Provenace> {
   }
 
   @override
-  void write(BinaryWriter writer, Provenace obj) {
+  void write(BinaryWriter writer, District obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -44,7 +44,7 @@ class ProvenaceAdapter extends TypeAdapter<Provenace> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ProvenaceAdapter &&
+      other is DistrictAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -53,9 +53,9 @@ class ProvenaceAdapter extends TypeAdapter<Provenace> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-Provenace _$ProvenaceFromJson(Map<String, dynamic> json) {
-  return Provenace(
-    uuid: json['uuid'] as String,
+District _$DistrictFromJson(Map<String, dynamic> json) {
+  return District(
+    uuid: json['uuid'] as String?,
     name: json['name'] as String,
     createdAt: json['created_at'] == null
         ? null
@@ -66,7 +66,7 @@ Provenace _$ProvenaceFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ProvenaceToJson(Provenace instance) => <String, dynamic>{
+Map<String, dynamic> _$DistrictToJson(District instance) => <String, dynamic>{
       'uuid': instance.uuid,
       'name': instance.name,
       'created_at': instance.createdAt?.toIso8601String(),

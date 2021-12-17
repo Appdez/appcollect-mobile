@@ -1,9 +1,11 @@
-import 'package:biospdatabase/Model/Benificiary/Benificiary.dart';
-import 'package:biospdatabase/Controller/BenificiaryController.dart';
-import 'package:biospdatabase/View/BenificiaryForm/BenificiaryForm.dart';
+
+import '../../Controller/BenificiaryController.dart';
+import '../../View/BenificiaryForm/BenificiaryForm.dart';
 import 'package:flutter/material.dart';
 
 import 'ContentTile.dart';
+
+import '../../Model/Benificiary/Benificiary.dart';
 
 class DesktopTile extends StatefulWidget {
   const DesktopTile({Key? key, required this.benificiary}) : super(key: key);

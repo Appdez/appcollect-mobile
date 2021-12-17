@@ -19,82 +19,49 @@ class BenificiaryAdapter extends TypeAdapter<Benificiary> {
     return Benificiary(
       uuid: fields[0] as String,
       fullName: fields[1] as String?,
-      numberOfVisits: fields[4] as String?,
-      birthDate: fields[6] as DateTime?,
-      phone: fields[7] as String?,
-      serviceDate: fields[8] as DateTime?,
-      homeCare: fields[18] as bool?,
-      purposeOfVisit: fields[9] as String?,
-      specifyPurposeOfVisit: fields[10] as String?,
-      dateReceived: fields[20] as DateTime?,
-      neighborhoodUuid: fields[2] as String?,
-      genreUuid: fields[3] as String?,
-      provenaceUuid: fields[5] as String?,
-      forwardedServiceUuid: fields[15] as String?,
-      otherForwardedService: fields[16] as String?,
-      specifyForwardedService: fields[17] as String?,
-      reasonOpeningCaseUuid: fields[11] as String?,
-      otherReasonOpeningCase: fields[12] as String?,
-      documentTypeUuid: fields[13] as String?,
-      otherDocumentType: fields[14] as String?,
-      visitProposes: fields[19] as String?,
-      status: fields[21] as bool?,
-      createdAt: fields[22] as DateTime,
-      updatedAt: fields[23] as DateTime,
+      age: fields[2] as String?,
+      qualification: fields[3] as String?,
+      formNumber: fields[4] as String?,
+      zone: fields[5] as String?,
+      location: fields[6] as String?,
+      districtUuid: fields[7] as String?,
+      benefitUuid: fields[8] as String?,
+      projectAreaUuid: fields[9] as String?,
+      genreUuid: fields[10] as String?,
+      createdAt: fields[11] as DateTime,
+      updatedAt: fields[12] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, Benificiary obj) {
     writer
-      ..writeByte(24)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.uuid)
       ..writeByte(1)
       ..write(obj.fullName)
       ..writeByte(2)
-      ..write(obj.neighborhoodUuid)
+      ..write(obj.age)
       ..writeByte(3)
-      ..write(obj.genreUuid)
+      ..write(obj.qualification)
       ..writeByte(4)
-      ..write(obj.numberOfVisits)
+      ..write(obj.formNumber)
       ..writeByte(5)
-      ..write(obj.provenaceUuid)
+      ..write(obj.zone)
       ..writeByte(6)
-      ..write(obj.birthDate)
+      ..write(obj.location)
       ..writeByte(7)
-      ..write(obj.phone)
+      ..write(obj.districtUuid)
       ..writeByte(8)
-      ..write(obj.serviceDate)
+      ..write(obj.benefitUuid)
       ..writeByte(9)
-      ..write(obj.purposeOfVisit)
+      ..write(obj.projectAreaUuid)
       ..writeByte(10)
-      ..write(obj.specifyPurposeOfVisit)
+      ..write(obj.genreUuid)
       ..writeByte(11)
-      ..write(obj.reasonOpeningCaseUuid)
-      ..writeByte(12)
-      ..write(obj.otherReasonOpeningCase)
-      ..writeByte(13)
-      ..write(obj.documentTypeUuid)
-      ..writeByte(14)
-      ..write(obj.otherDocumentType)
-      ..writeByte(15)
-      ..write(obj.forwardedServiceUuid)
-      ..writeByte(16)
-      ..write(obj.otherForwardedService)
-      ..writeByte(17)
-      ..write(obj.specifyForwardedService)
-      ..writeByte(18)
-      ..write(obj.homeCare)
-      ..writeByte(19)
-      ..write(obj.visitProposes)
-      ..writeByte(20)
-      ..write(obj.dateReceived)
-      ..writeByte(21)
-      ..write(obj.status)
-      ..writeByte(22)
       ..write(obj.createdAt)
-      ..writeByte(23)
+      ..writeByte(12)
       ..write(obj.updatedAt);
   }
 
@@ -117,34 +84,16 @@ Benificiary _$BenificiaryFromJson(Map<String, dynamic> json) {
   return Benificiary(
     uuid: json['uuid'] as String,
     fullName: json['full_name'] as String?,
-    numberOfVisits: json['number_of_visits'] as String?,
-    birthDate: json['birth_date'] == null
-        ? null
-        : DateTime.parse(json['birth_date'] as String),
-    phone: json['phone'] as String?,
-    serviceDate: json['service_date'] == null
-        ? null
-        : DateTime.parse(json['service_date'] as String),
-    homeCare: json['home_care'] as bool?,
-    purposeOfVisit: json['purpose_of_visit_uuid'] as String?,
-    specifyPurposeOfVisit: json['specify_purpose_of_visit'] as String?,
-    dateReceived: json['date_received'] == null
-        ? null
-        : DateTime.parse(json['date_received'] as String),
-    neighborhoodUuid: json['neighborhood_uuid'] as String?,
+    age: json['age'] as String?,
+    qualification: json['qualification'] as String?,
+    formNumber: json['form_number'] as String?,
+    zone: json['zone'] as String?,
+    location: json['location'] as String?,
+    districtUuid: json['district_uuid'] as String?,
+    benefitUuid: json['benefit_uuid'] as String?,
+    projectAreaUuid: json['project_area_uuid'] as String?,
     genreUuid: json['genre_uuid'] as String?,
-    provenaceUuid: json['provenace_uuid'] as String?,
-    forwardedServiceUuid: json['forwarded_service_uuid'] as String?,
-    otherForwardedService: json['other_forwarded_service'] as String?,
-    specifyForwardedService: json['specify_forwarded_service'] as String?,
-    reasonOpeningCaseUuid: json['reason_opening_case_uuid'] as String?,
-    otherReasonOpeningCase: json['other_reason_opening_case'] as String?,
-    documentTypeUuid: json['document_type_uuid'] as String?,
-    otherDocumentType: json['other_document_type'] as String?,
-    visitProposes: json['visit_proposes'] as String?,
-    status: json['status'] as bool?,
-    createdAt: 
-         DateTime.parse(json['created_at'] as String),
+    createdAt: DateTime.parse(json['created_at'] as String),
     updatedAt: DateTime.parse(json['updated_at'] as String),
   );
 }
@@ -153,26 +102,15 @@ Map<String, dynamic> _$BenificiaryToJson(Benificiary instance) =>
     <String, dynamic>{
       'uuid': instance.uuid,
       'full_name': instance.fullName,
-      'neighborhood_uuid': instance.neighborhoodUuid,
+      'age': instance.age,
+      'qualification': instance.qualification,
+      'form_number': instance.formNumber,
+      'zone': instance.zone,
+      'location': instance.location,
+      'district_uuid': instance.districtUuid,
+      'benefit_uuid': instance.benefitUuid,
+      'project_area_uuid': instance.projectAreaUuid,
       'genre_uuid': instance.genreUuid,
-      'number_of_visits': instance.numberOfVisits,
-      'provenace_uuid': instance.provenaceUuid,
-      'birth_date': instance.birthDate?.toIso8601String(),
-      'phone': instance.phone,
-      'service_date': instance.serviceDate?.toIso8601String(),
-      'purpose_of_visit_uuid': instance.purposeOfVisit,
-      'specify_purpose_of_visit': instance.specifyPurposeOfVisit,
-      'reason_opening_case_uuid': instance.reasonOpeningCaseUuid,
-      'other_reason_opening_case': instance.otherReasonOpeningCase,
-      'document_type_uuid': instance.documentTypeUuid,
-      'other_document_type': instance.otherDocumentType,
-      'forwarded_service_uuid': instance.forwardedServiceUuid,
-      'other_forwarded_service': instance.otherForwardedService,
-      'specify_forwarded_service': instance.specifyForwardedService,
-      'home_care': instance.homeCare,
-      'visit_proposes': instance.visitProposes,
-      'date_received': instance.dateReceived?.toIso8601String(),
-      'status': instance.status,
       'created_at': instance.createdAt.toIso8601String(),
       'updated_at': instance.updatedAt.toIso8601String(),
     };

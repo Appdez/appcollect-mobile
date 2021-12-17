@@ -1,8 +1,4 @@
-import 'package:biospdatabase/Model/Auth/Auth.dart';
-import 'package:biospdatabase/View/FormComponents/LabelComponent.dart';
-import 'package:biospdatabase/View/FormComponents/PasswordComponent.dart';
-import 'package:biospdatabase/View/FormComponents/TextComponent.dart';
-import 'package:biospdatabase/View/Home/Home.dart';
+
 import 'package:flutter/material.dart';
 
 class FormComponents extends StatefulWidget {

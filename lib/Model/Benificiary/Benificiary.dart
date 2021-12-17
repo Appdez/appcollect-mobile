@@ -1,7 +1,9 @@
-import 'package:biospdatabase/Model/Model.dart';
+
+
+
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
-
+import '../Model.dart';
 part 'Benificiary.g.dart';
 
 @HiveType(typeId: 1)
@@ -15,116 +17,61 @@ class Benificiary extends Model {
   late final String? fullName;
 
   @HiveField(2)
-  @JsonKey(name: 'neighborhood_uuid')
-  late String? neighborhoodUuid;
+  @JsonKey(name: 'age')
+  late String? age;
 
   @HiveField(3)
+  @JsonKey(name: 'qualification')
+  late String? qualification;
+
+  @HiveField(4)
+  @JsonKey(name: 'form_number')
+  late String? formNumber;
+
+  @HiveField(5)
+  @JsonKey(name: 'zone')
+  late String? zone;
+
+  @HiveField(6)
+  @JsonKey(name: 'location')
+  late String? location;
+
+  @HiveField(7)
+  @JsonKey(name: 'district_uuid')
+  late String? districtUuid;
+
+  @HiveField(8)
+  @JsonKey(name: 'benefit_uuid')
+  late String? benefitUuid;
+
+  @HiveField(9)
+  @JsonKey(name: 'project_area_uuid')
+  late String? projectAreaUuid;
+
+  @HiveField(10)
   @JsonKey(name: 'genre_uuid')
   late String? genreUuid;
 
-  @HiveField(4)
-  @JsonKey(name: 'number_of_visits')
-  late String? numberOfVisits;
-
-  @HiveField(5)
-  @JsonKey(name: 'provenace_uuid')
-  late String? provenaceUuid;
-
-  @HiveField(6)
-  @JsonKey(name: 'birth_date')
-  late DateTime? birthDate;
-
-  @HiveField(7)
-  @JsonKey(name: 'phone')
-  late String? phone;
-
-  @HiveField(8)
-  @JsonKey(name: 'service_date')
-  late DateTime? serviceDate;
-
-  @HiveField(9)
-  @JsonKey(name: 'purpose_of_visit_uuid')
-  late String? purposeOfVisit;
-
-  @HiveField(10)
-  @JsonKey(name: 'specify_purpose_of_visit')
-  late String? specifyPurposeOfVisit;
-
   @HiveField(11)
-  @JsonKey(name: 'reason_opening_case_uuid')
-  late String? reasonOpeningCaseUuid;
-
-  @HiveField(12)
-  @JsonKey(name: 'other_reason_opening_case')
-  late String? otherReasonOpeningCase;
-
-  @HiveField(13)
-  @JsonKey(name: 'document_type_uuid')
-  late String? documentTypeUuid;
-
-  @HiveField(14)
-  @JsonKey(name: 'other_document_type')
-  late String? otherDocumentType;
-
-  @HiveField(15)
-  @JsonKey(name: 'forwarded_service_uuid')
-  late String? forwardedServiceUuid;
-
-  @HiveField(16)
-  @JsonKey(name: 'other_forwarded_service')
-  late String? otherForwardedService;
-
-  @HiveField(17)
-  @JsonKey(name: 'specify_forwarded_service')
-  late String? specifyForwardedService;
-
-  @HiveField(18)
-  @JsonKey(name: 'home_care')
-  late bool? homeCare;
-
-  @HiveField(19)
-  @JsonKey(name: 'visit_proposes')
-  late String? visitProposes;
-
-  @HiveField(20)
-  @JsonKey(name: 'date_received')
-  late DateTime? dateReceived;
-
-  @HiveField(21)
-  @JsonKey(name: 'status')
-  late bool? status;
-
-  @HiveField(22)
   @JsonKey(name: 'created_at')
   late DateTime createdAt;
 
-  @HiveField(23)
+  @HiveField(12)
   @JsonKey(name: 'updated_at')
   late DateTime updatedAt;
 
   Benificiary({
     required this.uuid,
     this.fullName,
-    this.numberOfVisits,
-    this.birthDate,
-    this.phone,
-    this.serviceDate,
-    this.homeCare,
-    this.purposeOfVisit,
-    this.specifyPurposeOfVisit,
-    this.dateReceived,
-    this.neighborhoodUuid,
+    this.age,
+    this.qualification,
+    this.formNumber,
+    this.zone,
+    this.location,
+    this.districtUuid,
+    this.benefitUuid,
+    this.projectAreaUuid,
     this.genreUuid,
-    this.provenaceUuid,
-    this.forwardedServiceUuid,
-    this.otherForwardedService,
-    this.specifyForwardedService,
-    this.reasonOpeningCaseUuid,
-    this.otherReasonOpeningCase,
-    this.documentTypeUuid,
-    this.otherDocumentType,
-    this.visitProposes,
-    this.status,
     required this.createdAt,
     required this.updatedAt,
   });

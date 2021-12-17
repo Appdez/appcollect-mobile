@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'DocumentType.dart';
+part of 'ProjectArea.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DocumentTypeAdapter extends TypeAdapter<DocumentType> {
+class ProjectAreaAdapter extends TypeAdapter<ProjectArea> {
   @override
-  final int typeId = 2;
+  final int typeId = 4;
 
   @override
-  DocumentType read(BinaryReader reader) {
+  ProjectArea read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return DocumentType(
-      uuid: fields[0] as String,
+    return ProjectArea(
+      uuid: fields[0] as String?,
       name: fields[1] as String,
       createdAt: fields[2] as DateTime?,
       updatedAt: fields[3] as DateTime?,
@@ -25,7 +25,7 @@ class DocumentTypeAdapter extends TypeAdapter<DocumentType> {
   }
 
   @override
-  void write(BinaryWriter writer, DocumentType obj) {
+  void write(BinaryWriter writer, ProjectArea obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -44,7 +44,7 @@ class DocumentTypeAdapter extends TypeAdapter<DocumentType> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DocumentTypeAdapter &&
+      other is ProjectAreaAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -53,9 +53,9 @@ class DocumentTypeAdapter extends TypeAdapter<DocumentType> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-DocumentType _$DocumentTypeFromJson(Map<String, dynamic> json) {
-  return DocumentType(
-    uuid: json['uuid'] as String,
+ProjectArea _$ProjectAreaFromJson(Map<String, dynamic> json) {
+  return ProjectArea(
+    uuid: json['uuid'] as String?,
     name: json['name'] as String,
     createdAt: json['created_at'] == null
         ? null
@@ -66,7 +66,7 @@ DocumentType _$DocumentTypeFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$DocumentTypeToJson(DocumentType instance) =>
+Map<String, dynamic> _$ProjectAreaToJson(ProjectArea instance) =>
     <String, dynamic>{
       'uuid': instance.uuid,
       'name': instance.name,

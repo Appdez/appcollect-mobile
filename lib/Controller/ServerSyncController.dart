@@ -1,25 +1,20 @@
 import 'dart:convert';
-
-import 'package:biospdatabase/Model/Benificiary/Benificiary.dart';
-import 'package:biospdatabase/Model/DocumentType/DocumentType.dart';
-import 'package:biospdatabase/Model/ForwardedService/ForwardedService.dart';
-import 'package:biospdatabase/Model/Genre/Genre.dart';
-import 'package:biospdatabase/Model/Neighborhood/Neighborhood.dart';
-import 'package:biospdatabase/Model/Provenace/Provenace.dart';
-import 'package:biospdatabase/Model/PurposeOfVisit/PurposeOfVisit.dart';
-import 'package:biospdatabase/Model/ReasonOpeningCase/ReasonOpeningCase.dart';
-import 'package:biospdatabase/Controller/BenificiaryController.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
-
+import 'BenificiaryController.dart';
+import '../Model/Benefit/Benefit.dart';
+import '../Model/Benificiary/Benificiary.dart';
+import '../Model/Genre/Genre.dart';
+import '../Model/ProjectArea/ProjectArea.dart';
+import '../Model/District/District.dart';
 class ServerSyncController {
   final headers = {
     'Accept': 'application/json',
     'Authorization': 'Bearer ' + Hive.box('token').get('token').toString(),
     'Content-Type': 'application/json'
   };
-  final baseUrl = "https://www.biosp.sumburero.org/api/sync";
+  final baseUrl = "https://www.appio.sumburero.org/api/sync";
 
   Future<bool> getRepport(String bairro) async {
     var request =
@@ -59,80 +54,41 @@ class ServerSyncController {
 
           ///Document type sync database
           var documentTypes = data['document_types'];
-          var listDocumentTypes = List.generate(documentTypes.length, (index) {
-            return DocumentType.fromJson(documentTypes[index]);
+          var listBenefits = List.generate(documentTypes.length, (index) {
+            return Benefit.fromJson(documentTypes[index]);
           });
-          Syncronization.getDocumentTypes()
-              .deleteAll(Syncronization.getDocumentTypes().keys);
-          listDocumentTypes.forEach((element) {
-            Syncronization.getDocumentTypes().put(element.uuid, element);
+          Syncronization.getBenefits()
+              .deleteAll(Syncronization.getBenefits().keys);
+          listBenefits.forEach((element) {
+            Syncronization.getBenefits().put(element.uuid, element);
           });
 
           ///forwarded_services  sync database
           var forwardedServices = data['forwarded_services'];
-          var listForwardedServices =
+          var listDistricts =
               List.generate(forwardedServices.length, (index) {
-            return ForwardedService.fromJson(forwardedServices[index]);
+            return District.fromJson(forwardedServices[index]);
           });
-          Syncronization.getForwardedServices()
-              .deleteAll(Syncronization.getForwardedServices().keys);
+          Syncronization.getDistricts()
+              .deleteAll(Syncronization.getDistricts().keys);
 
-          listForwardedServices.forEach((element) {
-            Syncronization.getForwardedServices().put(element.uuid, element);
+          listDistricts.forEach((element) {
+            Syncronization.getDistricts().put(element.uuid, element);
           });
 
           ///neighborhoods  sync database
           var neighborhoods = data['neighborhoods'];
-          var listNeighborhoods = List.generate(neighborhoods.length, (index) {
-            return Neighborhood.fromJson(neighborhoods[index]);
+          var listProjectAreas = List.generate(neighborhoods.length, (index) {
+            return ProjectArea.fromJson(neighborhoods[index]);
           });
-          Syncronization.getNeighborhoods()
-              .deleteAll(Syncronization.getNeighborhoods().keys);
+          Syncronization.getProjectAreas()
+              .deleteAll(Syncronization.getProjectAreas().keys);
 
-          listNeighborhoods.forEach((element) {
-            Syncronization.getNeighborhoods().put(element.uuid, element);
-          });
-
-          ///provenances  sync database
-          var provenances = data['provenances'];
-          var listProvenances = List.generate(provenances.length, (index) {
-            return Provenace.fromJson(provenances[index]);
-          });
-          Syncronization.getProvenances()
-              .deleteAll(Syncronization.getProvenances().keys);
-
-          listProvenances.forEach((element) {
-            Syncronization.getProvenances().put(element.uuid, element);
+          listProjectAreas.forEach((element) {
+            Syncronization.getProjectAreas().put(element.uuid, element);
           });
 
-          ///provenances  sync database
-          var propusesOfVisits = data['propuses_of_visits'];
-          var listPropusesOfVisits =
-              List.generate(propusesOfVisits.length, (index) {
-            return PurposeOfVisit.fromJson(propusesOfVisits[index]);
-          });
-          Syncronization.getProposeOfVisits()
-              .deleteAll(Syncronization.getProposeOfVisits().keys);
-
-          listPropusesOfVisits.forEach((element) {
-            Syncronization.getProposeOfVisits().put(element.uuid, element);
-          });
-
-          //reason_of_opening_cases
-
-          var reasonOfOpeningCases = data['reason_of_opening_cases'];
-          var listReasonOfOpeningCases =
-              List.generate(reasonOfOpeningCases.length, (index) {
-            return ReasonOpeningCase.fromJson(reasonOfOpeningCases[index]);
-          });
-          Syncronization.getReasonsOfOpeningCases()
-              .deleteAll(Syncronization.getReasonsOfOpeningCases().keys);
-
-          listReasonOfOpeningCases.forEach((element) {
-            Syncronization.getReasonsOfOpeningCases()
-                .put(element.uuid, element);
-          });
-
+         
           //benificiaries
 
           var benificiaries = data['benificiaries'];

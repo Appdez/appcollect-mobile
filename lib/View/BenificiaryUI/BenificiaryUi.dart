@@ -1,7 +1,8 @@
-import 'package:biospdatabase/Model/Benificiary/Benificiary.dart';
+
 import 'package:flutter/material.dart';
 import 'DesktopTile.dart';
 import 'MobileTile.dart';
+import '../../Model/Benificiary/Benificiary.dart';
 
 class BenificiaryUi extends StatefulWidget {
   final Benificiary benificiary;
