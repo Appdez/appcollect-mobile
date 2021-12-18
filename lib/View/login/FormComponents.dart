@@ -1,4 +1,9 @@
 
+import 'package:appcollect/Model/Auth/Auth.dart';
+import 'package:appcollect/View/FormComponents/LabelComponent.dart';
+import 'package:appcollect/View/FormComponents/PasswordComponent.dart';
+import 'package:appcollect/View/FormComponents/TextComponent.dart';
+import 'package:appcollect/View/Home/Home.dart';
 import 'package:flutter/material.dart';
 
 class FormComponents extends StatefulWidget {

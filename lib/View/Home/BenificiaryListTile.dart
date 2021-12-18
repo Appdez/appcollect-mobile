@@ -1,4 +1,6 @@
 
+import 'package:appcollect/Model/Benificiary/Benificiary.dart';
+import 'package:appcollect/View/BenificiaryUI/BenificiaryUi.dart';
 import 'package:dart_json_mapper/dart_json_mapper.dart';
 import 'package:flutter/material.dart';
 
@@ -22,16 +24,12 @@ class BenificiaryListTile extends StatelessWidget {
             ),
             backgroundColor: Colors.grey.shade300,
           ),
-          title: benificiary.fullName != null
-              ? Text(
-                  "${capitalize(benificiary.fullName ?? "")}",
+          title:Text(
+                  "${capitalize(benificiary.fullName)}",
                   style: TextStyle(
                       fontWeight: FontWeight.w800, color: Colors.grey.shade800),
-                )
-              : Text(""),
-          subtitle: benificiary.phone != null
-              ? Text("${benificiary.phone}")
-              : Text(""),
+                ),
+          subtitle:  Text("${benificiary.formNumber}"),
           trailing: icon != null ? icon : Text(""),
         ),
         margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),

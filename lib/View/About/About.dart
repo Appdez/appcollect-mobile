@@ -29,20 +29,12 @@ class About extends StatelessWidget {
             leading: CircleAvatar(
               child: Icon(
                 Icons.verified_sharp,
-                color: Colors.amber.shade400,
+                color: Colors.blue.shade400,
               ),
               backgroundColor: Colors.white,
             ),
             title: Text("Versão"),
-            subtitle: Text("1.0.2"),
-          ),
-          ListTile(
-            leading: CircleAvatar(
-              backgroundImage: AssetImage('images/logo.png'),
-              backgroundColor: Colors.white,
-            ),
-            title: Text("Projecto"),
-            subtitle: Text("Akulu - Akulu II"),
+            subtitle: Text("1.0.3"),
           ),
           ListTile(
             title: Text("Desenvolvedor"),
@@ -69,17 +61,28 @@ class About extends StatelessWidget {
           ListTile(
             leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                child: Icon(
-                  Icons.developer_mode,
+                child: IconButton(
+                onPressed: () {
+                  launch("mailto:edsonmeque470@gmail.com");
+                },
+                icon: Icon(Icons.mail),
+                color: Colors.grey.shade600,
+              ) ),
+            title: Text("Contribuidor de desenvolvimento"),
+            subtitle: Text("Edson Meque"),
+             trailing: IconButton(
+                onPressed: () {
+                  launch("tel:+258844204657");
+                },
+                icon: Icon(
+                  Icons.call,
                   color: Colors.grey.shade600,
                 )),
-            title: Text("Contribuidores de desenvolvimento"),
-            subtitle: Text("Edson Meque"),
           ),
           GestureDetector(
               child: ListTile(
             title: Text("Licença"),
-            subtitle: Text("BSD-3-Clause (LICENSE)",
+            subtitle: Text("Proprietary (LICENSE)",
                 style: TextStyle(fontWeight: FontWeight.w800)),
             leading: CircleAvatar(
                 backgroundColor: Colors.white, child: Icon(Icons.file_present)),
@@ -87,7 +90,7 @@ class About extends StatelessWidget {
               context: context,
               builder: (BuildContext context) => AlertDialog(
                 title: const Text(
-                  'BSD-3-Clause (LICENSE)',
+                  'Proprietary (LICENSE)',
                   style: TextStyle(fontWeight: FontWeight.w800),
                 ),
                 content: SingleChildScrollView(
@@ -96,7 +99,7 @@ class About extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          "Copyright 2021 Nelson Alexandre Mutane and contributors. All rights reserved."),
+                          "Copyright 2021 Nelson Alexandre Mutane and Edson Meque. All rights reserved."),
                       Text(
                           "Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:"),
                       Text(" "),
@@ -109,7 +112,7 @@ class About extends StatelessWidget {
                           "* Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer n the documentation and/or other materials provided with the distribution."),
                       Text(" "),
                       Text(
-                          "* Neither the name of Sumburero. nor the names of its"),
+                          "* Neither the name of AppDez. nor the names of its"),
                       Text(
                           "contributors may be used to endorse or promote products derived from this software without specific prior written permission."),
                       Text(" "),

@@ -1,4 +1,9 @@
-
+import 'package:appcollect/Controller/BenificiaryController.dart';
+import 'package:appcollect/Controller/ServerSyncController.dart';
+import 'package:appcollect/Model/Benificiary/Benificiary.dart';
+import 'package:appcollect/View/FormComponents/LabelComponent.dart';
+import 'package:appcollect/View/Home/BenificiaryListTile.dart';
+import 'package:appcollect/View/Relatorio/CardRelatorioUI.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -19,7 +24,7 @@ class RelatorioDiario extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          LabelComponent(labelText: "Último benificiario atendido"),
+          LabelComponent(labelText: "Último benificiario inserido"),
           ultimoBenificiario(),
           CardRelatorioUI(
             color: Colors.grey.shade300,
@@ -28,15 +33,15 @@ class RelatorioDiario extends StatelessWidget {
               color: Colors.grey.shade500,
             ),
             title: Text(
-              'Total atendidos mês passado',
+              'Total inseridos mês passado',
               style: TextStyle(
                   fontWeight: FontWeight.w800, color: Colors.grey.shade800),
             ),
             subtitle: Text(
                 ' ${Syncronization.getBeneficiaries().values.where((element) {
               var dateTime = DateTime.now();
-              return (element.serviceDate!.year > (dateTime.year - 1)) &&
-                  element.serviceDate!.month == DateTime.now().month - 1;
+              return (element.createdAt.year > (dateTime.year - 1)) &&
+                  element.createdAt.month == DateTime.now().month - 1;
             }).length}'),
           ),
           CardRelatorioUI(
@@ -46,7 +51,7 @@ class RelatorioDiario extends StatelessWidget {
               color: Colors.grey.shade500,
             ),
             title: Text(
-              'Total atendidos hoje',
+              'Total inseridos hoje',
               style: TextStyle(
                   fontWeight: FontWeight.w800, color: Colors.grey.shade800),
             ),
@@ -54,8 +59,8 @@ class RelatorioDiario extends StatelessWidget {
                 ' ${Syncronization.getBeneficiaries().values.where((element) {
               var dateTime = DateTime.now();
               dateTime = dateTime.subtract(Duration(days: dateTime.weekday));
-              return element.serviceDate!.isAfter(dateTime) &&
-                  element.serviceDate!.day == DateTime.now().day;
+              return element.createdAt.isAfter(dateTime) &&
+                  element.createdAt.day == DateTime.now().day;
             }).length}'),
           ),
           CardRelatorioUI(
@@ -65,9 +70,8 @@ class RelatorioDiario extends StatelessWidget {
               color: Colors.grey.shade500,
             ),
             onTap: () async {
-              if (Syncronization.getNeighborhoods().isNotEmpty) {
-                var result = await ServerSyncController().getRepport(
-                    Syncronization.getNeighborhoods().values.first.uuid);
+              if (await ServerSyncController().getRepport("biod")) {
+                var result = true;
                 if (result)
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: Text(
@@ -99,11 +103,11 @@ class RelatorioDiario extends StatelessWidget {
                   fontWeight: FontWeight.w800, color: Colors.grey.shade800),
             ),
             subtitle: Text(
-                'Total atendidos este mês: ${Syncronization.getBeneficiaries().values.where((element) {
+                'Total inseridos este mês: ${Syncronization.getBeneficiaries().values.where((element) {
               var dateTime = DateTime.now();
 
-              return (element.serviceDate!.year > (dateTime.year - 1)) &&
-                  element.serviceDate!.month == DateTime.now().month;
+              return (element.createdAt.year > (dateTime.year - 1)) &&
+                  element.createdAt.month == DateTime.now().month;
             }).length}'),
           ),
           graph()
@@ -123,14 +127,14 @@ class RelatorioDiario extends StatelessWidget {
     var weekDay = d.weekday;
     var firstDayOfWeek = d.subtract(Duration(days: weekDay));
     var bens = Syncronization.sortedBenificiaries().where((element) {
-      return element.serviceDate!.isAfter(firstDayOfWeek);
+      return element.createdAt.isAfter(firstDayOfWeek);
     }).toList();
-    print(bens.where((element) => element.serviceDate!.weekday == 5).length);
+    print(bens.where((element) => element.createdAt.weekday == 5).length);
     return Container(
       child: Column(
         children: [
           LabelComponent(
-              labelText: "Gráfico benificiarios atendidos nesta semana."),
+              labelText: "Gráfico inseridos nesta semana."),
           SfCartesianChart(
               primaryXAxis: CategoryAxis(),
               primaryYAxis: NumericAxis(),
@@ -142,31 +146,31 @@ class RelatorioDiario extends StatelessWidget {
                           'Seg',
                           bens
                               .where((element) =>
-                                  element.serviceDate!.weekday == 1)
+                                  element.createdAt.weekday == 1)
                               .length),
                       SalesData(
                           'Ter',
                           bens
                               .where((element) =>
-                                  element.serviceDate!.weekday == 2)
+                                  element.createdAt.weekday == 2)
                               .length),
                       SalesData(
                           'Qua',
                           bens
                               .where((element) =>
-                                  element.serviceDate!.weekday == 3)
+                                  element.createdAt.weekday == 3)
                               .length),
                       SalesData(
                           'Qui',
                           bens
                               .where((element) =>
-                                  element.serviceDate!.weekday == 4)
+                                  element.createdAt.weekday == 4)
                               .length),
                       SalesData(
                           'Sex',
                           bens
                               .where((element) =>
-                                  element.serviceDate!.weekday == 5)
+                                  element.createdAt.weekday == 5)
                               .length)
                     ],
                     xValueMapper: (SalesData sales, _) => sales.year,

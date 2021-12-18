@@ -1,15 +1,19 @@
-
-import '../../View/FormComponents/DateTimeComponent.dart';
+import 'package:appcollect/Model/Benefit/Benefit.dart';
+import 'package:appcollect/Model/District/District.dart';
+import 'package:appcollect/Model/Genre/Genre.dart';
+import 'package:appcollect/Model/ProjectArea/ProjectArea.dart';
+import 'package:appcollect/View/FormComponents/MultiSelectComponent.dart';
+import 'package:appcollect/View/FormComponents/NumberComponent.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import '../../View/FormComponents/LabelComponent.dart';
-import '../../View/FormComponents/PhoneNumberComponent.dart';
 import '../../View/FormComponents/SelectComponent.dart';
 import '../../View/FormComponents/TextComponent.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:dropdown_search2/dropdown_search2.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../../Model/Benificiary/Benificiary.dart';
 import '../../Controller/BenificiaryController.dart';
+
 class BenificiaryForm extends StatefulWidget {
   const BenificiaryForm({Key? key, this.benificiaryForEdit}) : super(key: key);
   final Benificiary? benificiaryForEdit;
@@ -23,6 +27,8 @@ class _BenificiaryFormState extends State<BenificiaryForm> {
   final _formKey = GlobalKey<FormState>();
   Benificiary? benificiaryForEdit;
   var benificiary;
+  List<Benefit> selectedBenefits = [];
+  List<ProjectArea> selectedProjectAreas = [];
 
   int _currentIndex = 1;
   @override
@@ -32,8 +38,18 @@ class _BenificiaryFormState extends State<BenificiaryForm> {
     } else {
       benificiary = new Benificiary(
               uuid: Uuid().v4(),
+              formNumber: 0,
+              age: 0,
+              genreUuid: "",
+              qualification: "",
+              districtUuid: "",
+              zone: "",
+              location: "",
+              projectAreas: [],
+              benefits: [],
               createdAt: DateTime.now(),
-              updatedAt: DateTime.now())
+              updatedAt: DateTime.now(),
+              fullName: '')
           .toJson();
     }
 
@@ -42,33 +58,28 @@ class _BenificiaryFormState extends State<BenificiaryForm> {
 
   @override
   Widget build(BuildContext context) {
-    var provenaces = Syncronization.getProvenances().values.toList();
-    if (provenaces.isNotEmpty) {
-      provenaces
+    var benefits = Syncronization.getBenefits().values.toList();
+    if (benefits.isNotEmpty) {
+      benefits
           .sort((a, b) => a.name.codeUnitAt(0).compareTo(b.name.codeUnitAt(0)));
     }
-    var proposeVisits = Syncronization.getProposeOfVisits().values.toList();
+    var districts = Syncronization.getDistricts().values.toList();
 
-    if (proposeVisits.isNotEmpty) {
-      proposeVisits
-          .sort((a, b) => a.name.codeUnitAt(0).compareTo(b.name.codeUnitAt(0)));
-    }
-
-    var openingCase = Syncronization.getReasonsOfOpeningCases().values.toList();
-    if (openingCase.isNotEmpty) {
-      openingCase
+    if (districts.isNotEmpty) {
+      districts
           .sort((a, b) => a.name.codeUnitAt(0).compareTo(b.name.codeUnitAt(0)));
     }
 
-    var documents = Syncronization.getDocumentTypes().values.toList();
-    if (documents.isNotEmpty) {
-      documents
+    var genres = Syncronization.getGenres().values.toList();
+    if (genres.isNotEmpty) {
+      genres
           .sort((a, b) => a.name.codeUnitAt(0).compareTo(b.name.codeUnitAt(0)));
     }
 
-    var forwarded = Syncronization.getForwardedServices().values.toList();
-    if (forwarded.isNotEmpty) {
-      forwarded.sort((a, b) => a.name.compareTo(b.name));
+    var projectAreas = Syncronization.getProjectAreas().values.toList();
+    if (projectAreas.isNotEmpty) {
+      projectAreas
+          .sort((a, b) => a.name.codeUnitAt(0).compareTo(b.name.codeUnitAt(0)));
     }
 
     return Scaffold(
@@ -93,9 +104,40 @@ class _BenificiaryFormState extends State<BenificiaryForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              LabelComponent(labelText: "Nome completo"),
+              LabelComponent(labelText: "Número de inquerito"),
+              NumberComponent(
+                hintText: "Número de inquerito",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor insira o número de inquerito';
+                  }
+                  return null;
+                },
+                initialValue: benificiaryForEdit != null
+                    ? "${benificiaryForEdit!.formNumber}"
+                    : "0",
+                onChanged: (formNumber) {
+                  setState(() {
+                    this.benificiary['form_number'] =
+                        int.tryParse(formNumber) ?? 0;
+                  });
+                },
+                onSaved: (formNumber) {
+                  setState(() {
+                    this.benificiary['form_number'] =
+                        int.tryParse("${formNumber ?? 0}") ?? 0;
+                  });
+                },
+              ),
+              LabelComponent(labelText: "Nome do participante"),
               TextComponent(
-                hintText: "Nome completo",
+                hintText: "Nome do participante",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor insira o nome do participante';
+                  }
+                  return null;
+                },
                 initialValue: benificiaryForEdit != null
                     ? benificiaryForEdit!.fullName
                     : "",
@@ -112,55 +154,38 @@ class _BenificiaryFormState extends State<BenificiaryForm> {
                   });
                 },
               ),
-              LabelComponent(labelText: "Bairro"),
-              SelectComponent(
-                hintText: "Bairro",
-                selectedItem:
-                    Syncronization.getNeighborhoods().values.toList().isNotEmpty
-                        ? (Syncronization.getNeighborhoods()
-                                .values
-                                .toList()
-                                .where((element) {
-                            if (benificiaryForEdit != null) {
-                              return "${benificiaryForEdit!.neighborhoodUuid}" ==
-                                  "${element.uuid}";
-                            }
-                            return false;
-                          }).isNotEmpty
-                            ? Syncronization.getNeighborhoods()
-                                .values
-                                .toList()
-                                .where((element) {
-                                return "${benificiaryForEdit!.neighborhoodUuid}" ==
-                                    "${element.uuid}";
-                              }).first
-                            : Syncronization.getNeighborhoods()
-                                .values
-                                .toList()
-                                .first)
-                        : null,
-                items:
-                    Syncronization.getNeighborhoods().values.toList().isNotEmpty
-                        ? Syncronization.getNeighborhoods().values.toList()
-                        : <Neighborhood>[],
-                onChanged: (Neighborhood? bairro) {
+              LabelComponent(labelText: "Idade"),
+              NumberComponent(
+                hintText: "Idade",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor insira a idade';
+                  }
+                  return null;
+                },
+                initialValue: benificiaryForEdit != null
+                    ? "${benificiaryForEdit!.age}"
+                    : "",
+                onChanged: (age) {
                   setState(() {
-                    if (bairro != null) {
-                      this.benificiary['neighborhood_uuid'] = bairro.uuid;
-                    }
+                    this.benificiary['age'] = int.tryParse(age) ?? 0;
                   });
                 },
-                onSaved: (Neighborhood? bairro) {
+                onSaved: (age) {
                   setState(() {
-                    if (bairro != null) {
-                      this.benificiary['neighborhood_uuid'] = bairro.uuid;
-                    }
+                    this.benificiary['age'] = int.tryParse("${age ?? 0}") ?? 0;
                   });
                 },
               ),
-              LabelComponent(labelText: "Sexo"),
+              LabelComponent(labelText: "Gênero"),
               SelectComponent(
                 hintText: "Sexo",
+                validator: (Genre? item) {
+                  if (item == null)
+                    return "Por favor selecione o gênero";
+                  else
+                    return null;
+                },
                 selectedItem:
                     Syncronization.getGenres().values.toList().isNotEmpty
                         ? (Syncronization.getGenres()
@@ -200,510 +225,225 @@ class _BenificiaryFormState extends State<BenificiaryForm> {
                   });
                 },
               ),
-              LabelComponent(labelText: "1⁰ visita ou frequência"),
-              NumberComponent(
-                hintText: "1⁰ visita ou frequência",
-                initialValue: benificiaryForEdit != null
-                    ? benificiaryForEdit!.numberOfVisits
-                    : "",
-                onChanged: (frequencia) {
-                  setState(() {
-                    this.benificiary['number_of_visits'] = frequencia;
-                  });
-                },
-                onSaved: (frequencia) {
-                  setState(() {
-                    this.benificiary['number_of_visits'] = frequencia;
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Proviniência"),
-              SelectComponent(
-                hintText: "Proviniência",
-                showSearchBox: true,
-                mode: Mode.DIALOG,
-                selectedItem: provenaces.isNotEmpty
-                    ? (Syncronization.getProvenances()
-                            .values
-                            .toList()
-                            .where((element) {
-                        if (benificiaryForEdit != null) {
-                          return "${benificiaryForEdit!.provenaceUuid}" ==
-                              "${element.uuid}";
-                        }
-                        return false;
-                      }).isNotEmpty
-                        ? Syncronization.getProvenances()
-                            .values
-                            .toList()
-                            .where((element) {
-                            return "${benificiaryForEdit!.provenaceUuid}" ==
-                                "${element.uuid}";
-                          }).first
-                        : null)
-                    : null,
-                items:
-                    Syncronization.getProvenances().values.toList().isNotEmpty
-                        ? provenaces
-                        : <Provenace>[],
-                onChanged: (Provenace? proviniencia) {
-                  setState(() {
-                    if (proviniencia != null) {
-                      this.benificiary['provenace_uuid'] = proviniencia.uuid;
-                    }
-                  });
-                },
-                onSaved: (Provenace? proviniencia) {
-                  setState(() {
-                    if (proviniencia != null) {
-                      this.benificiary['provenace_uuid'] = proviniencia.uuid;
-                    }
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Data de nascimento"),
-              DateComponent(
-                initialValue: benificiaryForEdit != null
-                    ? benificiaryForEdit!.birthDate
-                    : DateTime.now(),
-                onSubmited: (dataDeNascimento) {
-                  setState(() {
-                    if (dataDeNascimento != null) {
-                      this.benificiary['birth_date'] =
-                          dataDeNascimento.toIso8601String();
-                    }
-                  });
-                },
-                onSaved: (dataDeNascimento) {
-                  setState(() {
-                    if (dataDeNascimento != null) {
-                      this.benificiary['birth_date'] =
-                          dataDeNascimento.toIso8601String();
-                    }
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Contacto"),
-              PhoneNumberComponent(
-                hintText: "Contacto",
-                initialValue:
-                    benificiaryForEdit != null ? benificiaryForEdit!.phone : "",
-                onChanged: (contacto) {
-                  setState(() {
-                    this.benificiary['phone'] = contacto;
-                  });
-                },
-                onSaved: (contacto) {
-                  setState(() {
-                    this.benificiary['phone'] = contacto;
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Data de atendimento"),
-              DateTimeComponent(
-                initialValue: benificiaryForEdit != null
-                    ? benificiaryForEdit!.serviceDate
-                    : DateTime.now(),
-                onChanged: (dataDeAtendimento) {
-                  setState(() {
-                    if (dataDeAtendimento != null) {
-                      this.benificiary['service_date'] =
-                          dataDeAtendimento.toIso8601String();
-                    }
-                  });
-                },
-                onSaved: (dataDeAtendimento) {
-                  setState(() {
-                    if (dataDeAtendimento != null) {
-                      this.benificiary['service_date'] =
-                          dataDeAtendimento.toIso8601String();
-                    }
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Objectivo da visita"),
-              SelectComponent(
-                hintText: "Objectivo da visita",
-                showSearchBox: true,
-                selectedItem: Syncronization.getProposeOfVisits()
-                        .values
-                        .toList()
-                        .isNotEmpty
-                    ? (Syncronization.getProposeOfVisits()
-                            .values
-                            .toList()
-                            .where((element) {
-                        if (benificiaryForEdit != null) {
-                          return "${benificiaryForEdit!.purposeOfVisit}" ==
-                              "${element.uuid}";
-                        }
-                        return false;
-                      }).isNotEmpty
-                        ? Syncronization.getProposeOfVisits()
-                            .values
-                            .toList()
-                            .where((element) {
-                            return "${benificiaryForEdit!.purposeOfVisit}" ==
-                                "${element.uuid}";
-                          }).first
-                        : null)
-                    : null,
-                mode: Mode.DIALOG,
-                items: Syncronization.getProposeOfVisits()
-                        .values
-                        .toList()
-                        .isNotEmpty
-                    ? proposeVisits
-                    : <PurposeOfVisit>[],
-                onChanged: (PurposeOfVisit? objectivoDaVisita) {
-                  setState(() {
-                    if (objectivoDaVisita != null) {
-                      this.benificiary['purpose_of_visit_uuid'] =
-                          objectivoDaVisita.uuid;
-                    }
-                  });
-                },
-                onSaved: (PurposeOfVisit? objectivoDaVisita) {
-                  setState(() {
-                    if (objectivoDaVisita != null) {
-                      this.benificiary['purpose_of_visit_uuid'] =
-                          objectivoDaVisita.uuid;
-                    }
-                  });
-                },
-              ),
               LabelComponent(
-                  labelText: "Se tiver formação profissional Especificar"),
+                  labelText: "Qualificações acadêmicas/profissionais"),
               TextComponent(
-                hintText: "Se tiver formação profissional Especificar",
+                hintText: "Qualificações acadêmicas/profissionais",
                 initialValue: benificiaryForEdit != null
-                    ? benificiaryForEdit!.specifyPurposeOfVisit
+                    ? benificiaryForEdit!.qualification
                     : "",
-                onChanged: (specifyPurposeOfVisit) {
-                  setState(() {
-                    this.benificiary['specify_purpose_of_visit'] =
-                        specifyPurposeOfVisit;
-                  });
-                },
-                onSaved: (specifyPurposeOfVisit) {
-                  setState(() {
-                    this.benificiary['specify_purpose_of_visit'] =
-                        specifyPurposeOfVisit;
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Motivo de abertura de processo"),
-              SelectComponent(
-                hintText: "Motivo de abertura de processo",
-                showSearchBox: true,
-                selectedItem: Syncronization.getReasonsOfOpeningCases()
-                        .values
-                        .toList()
-                        .isNotEmpty
-                    ? (Syncronization.getReasonsOfOpeningCases()
-                            .values
-                            .toList()
-                            .where((element) {
-                        if (benificiaryForEdit != null) {
-                          return "${benificiaryForEdit!.reasonOpeningCaseUuid}" ==
-                              "${element.uuid}";
-                        }
-                        return false;
-                      }).isNotEmpty
-                        ? Syncronization.getReasonsOfOpeningCases()
-                            .values
-                            .toList()
-                            .where((element) {
-                            return "${benificiaryForEdit!.reasonOpeningCaseUuid}" ==
-                                "${element.uuid}";
-                          }).first
-                        : null)
-                    : null,
-                mode: Mode.DIALOG,
-                items: Syncronization.getReasonsOfOpeningCases()
-                        .values
-                        .toList()
-                        .isNotEmpty
-                    ? openingCase
-                    : <ReasonOpeningCase>[],
-                onChanged: (ReasonOpeningCase? motivoDeAberturaDeProcesso) {
-                  setState(() {
-                    if (motivoDeAberturaDeProcesso != null) {
-                      this.benificiary['reason_opening_case_uuid'] =
-                          motivoDeAberturaDeProcesso.uuid;
-                    }
-                  });
-                },
-                onSaved: (ReasonOpeningCase? motivoDeAberturaDeProcesso) {
-                  setState(() {
-                    if (motivoDeAberturaDeProcesso != null) {
-                      this.benificiary['reason_opening_case_uuid'] =
-                          motivoDeAberturaDeProcesso.uuid;
-                    }
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Outro Motivo"),
-              TextComponent(
-                hintText: "Outro Motivo",
-                initialValue: benificiaryForEdit != null
-                    ? benificiaryForEdit!.otherReasonOpeningCase
-                    : "",
-                onChanged: (otherReasonOpeningCase) {
-                  setState(() {
-                    this.benificiary['other_reason_opening_case'] =
-                        otherReasonOpeningCase;
-                  });
-                },
-                onSaved: (otherReasonOpeningCase) {
-                  setState(() {
-                    if (otherReasonOpeningCase != null) {
-                      this.benificiary['other_reason_opening_case'] =
-                          otherReasonOpeningCase;
-                    }
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Documentos necessários"),
-              SelectComponent(
-                hintText: "Documentos necessários",
-                selectedItem:
-                    Syncronization.getDocumentTypes().values.toList().isNotEmpty
-                        ? (Syncronization.getDocumentTypes()
-                                .values
-                                .toList()
-                                .where((element) {
-                            if (benificiaryForEdit != null) {
-                              return "${benificiaryForEdit!.documentTypeUuid}" ==
-                                  "${element.uuid}";
-                            }
-                            return false;
-                          }).isNotEmpty
-                            ? Syncronization.getDocumentTypes()
-                                .values
-                                .toList()
-                                .where((element) {
-                                return "${benificiaryForEdit!.documentTypeUuid}" ==
-                                    "${element.uuid}";
-                              }).first
-                            : null)
-                        : null,
-                showSearchBox: true,
-                mode: Mode.DIALOG,
-                items:
-                    Syncronization.getDocumentTypes().values.toList().isNotEmpty
-                        ? documents
-                        : <DocumentType>[],
-                onChanged: (DocumentType? documentoNecessarios) {
-                  setState(() {
-                    if (documentoNecessarios != null) {
-                      this.benificiary['document_type_uuid'] =
-                          documentoNecessarios.uuid;
-                    }
-                  });
-                },
-                onSaved: (DocumentType? documentoNecessarios) {
-                  setState(() {
-                    if (documentoNecessarios != null) {
-                      this.benificiary['document_type_uuid'] =
-                          documentoNecessarios.uuid;
-                    }
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Outro documento"),
-              TextComponent(
-                hintText: "Outro documento",
-                initialValue: benificiaryForEdit != null
-                    ? benificiaryForEdit!.otherDocumentType
-                    : "",
-                onChanged: (otherDocumentType) {
-                  setState(() {
-                    this.benificiary['other_document_type'] = otherDocumentType;
-                  });
-                },
-                onSaved: (otherDocumentType) {
-                  setState(() {
-                    if (otherDocumentType != null) {
-                      this.benificiary['other_document_type'] =
-                          otherDocumentType;
-                    }
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Serviço encaminhado"),
-              SelectComponent(
-                hintText: "Serviço encaminhado",
-                showSearchBox: true,
-                selectedItem: Syncronization.getForwardedServices()
-                        .values
-                        .toList()
-                        .isNotEmpty
-                    ? (Syncronization.getForwardedServices()
-                            .values
-                            .toList()
-                            .where((element) {
-                        if (benificiaryForEdit != null) {
-                          return "${benificiaryForEdit!.forwardedServiceUuid}" ==
-                              "${element.uuid}";
-                        }
-                        return false;
-                      }).isNotEmpty
-                        ? Syncronization.getForwardedServices()
-                            .values
-                            .toList()
-                            .where((element) {
-                            return "${benificiaryForEdit!.forwardedServiceUuid}" ==
-                                "${element.uuid}";
-                          }).first
-                        : null)
-                    : null,
-                mode: Mode.DIALOG,
-                items: Syncronization.getForwardedServices()
-                        .values
-                        .toList()
-                        .isNotEmpty
-                    ? forwarded
-                    : <ForwardedService>[],
-                onChanged: (ForwardedService? forwardedService) {
-                  setState(() {
-                    if (forwardedService != null) {
-                      this.benificiary['forwarded_service_uuid'] =
-                          forwardedService.uuid;
-                    }
-                  });
-                },
-                onSaved: (ForwardedService? forwardedService) {
-                  setState(() {
-                    if (forwardedService != null) {
-                      this.benificiary['forwarded_service_uuid'] =
-                          forwardedService.uuid;
-                    }
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Outro serviço"),
-              TextComponent(
-                hintText: "Outro serviço",
-                initialValue: benificiaryForEdit != null
-                    ? benificiaryForEdit!.otherForwardedService
-                    : "",
-                onChanged: (otherForwardedService) {
-                  setState(() {
-                    this.benificiary['other_forwarded_service'] =
-                        otherForwardedService;
-                  });
-                },
-                onSaved: (otherForwardedService) {
-                  setState(() {
-                    if (otherForwardedService != null) {
-                      this.benificiary['other_forwarded_service'] =
-                          otherForwardedService;
-                    }
-                  });
-                },
-              ),
-              LabelComponent(labelText: "Especificar Serviço"),
-              TextComponent(
-                hintText: "Especificar Serviço",
-                initialValue: benificiaryForEdit != null
-                    ? benificiaryForEdit!.specifyForwardedService
-                    : "",
-                onChanged: (value) {
-                  this.benificiary['specify_forwarded_service'] = value;
-                },
-                onSaved: (value) {
-                  this.benificiary['specify_forwarded_service'] = value;
-                },
-              ),
-              LabelComponent(
-                  labelText: "Necessita de acompanhamento domiciliar?"),
-              SelectComponent(
-                hintText: "Necessita de acompanhamento domiciliar?",
-                items: ["Sim", "Não"],
-                selectedItem: benificiaryForEdit != null
-                    ? (benificiaryForEdit!.homeCare == true ? "Sim" : "Não")
-                    : null,
-                onChanged: (necessitaDeAcompanhamento) {
-                  setState(() {
-                    if (necessitaDeAcompanhamento == "Sim") {
-                      this.benificiary['home_care'] = true;
-                    } else {
-                      this.benificiary['home_care'] = false;
-                    }
-                  });
-                },
-                onSaved: (necessitaDeAcompanhamento) {
-                  // setState(() {
-                  if (necessitaDeAcompanhamento == "Sim") {
-                    this.benificiary['home_care'] = true;
-                  } else {
-                    this.benificiary['home_care'] = false;
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor insira qualificações';
                   }
-                  // });
+                  return null;
                 },
-              ),
-              LabelComponent(labelText: "Objectivo da(s)  visita(s)"),
-              TextComponent(
-                hintText: "Objectivo da(s)  visita(s)",
-                initialValue: benificiaryForEdit != null
-                    ? benificiaryForEdit!.visitProposes
-                    : "",
-                onChanged: (value) {
-                  this.benificiary['visit_proposes'] = value;
-                },
-                onSaved: (value) {
-                  this.benificiary['visit_proposes'] = value;
-                },
-              ),
-              LabelComponent(labelText: "Data que foi recebida pelo serviço"),
-              DateTimeComponent(
-                initialValue: benificiaryForEdit != null
-                    ? benificiaryForEdit!.dateReceived
-                    : DateTime.now(),
-                onChanged: (receivedDate) {
+                onChanged: (qualification) {
                   setState(() {
-                    if (receivedDate != null) {
-                      this.benificiary['date_received'] =
-                          receivedDate.toIso8601String();
-                    }
+                    this.benificiary['qualification'] = qualification;
                   });
                 },
-                onSaved: (receivedDate) {
+                onSaved: (qualification) {
                   setState(() {
-                    if (receivedDate != null) {
-                      this.benificiary['date_received'] =
-                          receivedDate.toIso8601String();
+                    if (qualification != null) {
+                      this.benificiary['qualification'] = qualification;
                     }
                   });
                 },
               ),
-              LabelComponent(labelText: "Resolveu o seu problema?"),
+              LabelComponent(labelText: "Distrito"),
               SelectComponent(
-                hintText: "Resolveu o seu problema?",
-                items: ["Sim", "Não"],
-                selectedItem: benificiaryForEdit != null
-                    ? (benificiaryForEdit!.status == true ? "Sim" : "Não")
+                hintText: "Distrito",
+                showSearchBox: true,
+                validator: (District? item) {
+                  if (item == null)
+                    return "Por favor selecione o distrito";
+                  else
+                    return null;
+                },
+                mode: Mode.DIALOG,
+                selectedItem: districts.isNotEmpty
+                    ? (Syncronization.getDistricts()
+                            .values
+                            .toList()
+                            .where((element) {
+                        if (benificiaryForEdit != null) {
+                          return "${benificiaryForEdit!.districtUuid}" ==
+                              "${element.uuid}";
+                        }
+                        return false;
+                      }).isNotEmpty
+                        ? Syncronization.getDistricts()
+                            .values
+                            .toList()
+                            .where((element) {
+                            return "${benificiaryForEdit!.districtUuid}" ==
+                                "${element.uuid}";
+                          }).first
+                        : null)
                     : null,
-                onChanged: (problemaResolvido) {
+                items: Syncronization.getDistricts().values.toList().isNotEmpty
+                    ? districts
+                    : <District>[],
+                onChanged: (District? distrito) {
                   setState(() {
-                    if (problemaResolvido == "Sim") {
-                      this.benificiary['status'] = true;
-                    } else {
-                      this.benificiary['status'] = false;
+                    if (distrito != null) {
+                      this.benificiary['district_uuid'] = distrito.uuid;
                     }
                   });
                 },
-                onSaved: (problemaResolvido) {
+                onSaved: (District? distrito) {
                   setState(() {
-                    if (problemaResolvido == "Sim") {
-                      this.benificiary['status'] = true;
-                    } else {
-                      this.benificiary['status'] = false;
+                    if (distrito != null) {
+                      this.benificiary['district_uuid'] = distrito.uuid;
                     }
                   });
                 },
               ),
+              LabelComponent(labelText: "Localidade"),
+              TextComponent(
+                hintText: "Localidade",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor insira a localidade';
+                  }
+                  return null;
+                },
+                initialValue: benificiaryForEdit != null
+                    ? benificiaryForEdit!.location
+                    : "",
+                onChanged: (location) {
+                  this.benificiary['location'] = location;
+                },
+                onSaved: (location) {
+                  this.benificiary['location'] = location;
+                },
+              ),
+              LabelComponent(labelText: "Bairro"),
+              TextComponent(
+                hintText: "Bairro",
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Por favor insira o bairro';
+                  }
+                  return null;
+                },
+                initialValue:
+                    benificiaryForEdit != null ? benificiaryForEdit!.zone : "",
+                onChanged: (zone) {
+                  this.benificiary['zone'] = zone;
+                },
+                onSaved: (zone) {
+                  this.benificiary['zone'] = zone;
+                },
+              ),
+              LabelComponent(labelText: "Area do projecto"),
+              MultiSelectComponent(
+                hintText: "Area do projecto",
+                showSearchBox: true,
+                mode: Mode.DIALOG,
+                validator: (items) => items == null || items.isEmpty
+                    ? "Por favor selecione as areas do projecto"
+                    : null,
+                selectedItems: projectAreas.isNotEmpty
+                    ? (Syncronization.getProjectAreas()
+                            .values
+                            .toList()
+                            .where((element) {
+                        if (benificiaryForEdit != null) {
+                          return benificiaryForEdit!.projectAreas
+                              .contains(element);
+                        }
+                        return false;
+                      }).isNotEmpty
+                        ? Syncronization.getProjectAreas()
+                            .values
+                            .toList()
+                            .where((element) {
+                            return benificiaryForEdit!.projectAreas
+                                .contains(element);
+                          }).toList()
+                        : [])
+                    : [],
+                items:
+                    Syncronization.getProjectAreas().values.toList().isNotEmpty
+                        ? projectAreas
+                        : <ProjectArea>[],
+                onChanged: (projectAreas) {
+                  setState(() {
+                    if (projectAreas != null) {
+                      this.benificiary['project_areas'] = List.generate(
+                          projectAreas.length,
+                          (index) =>
+                              (projectAreas[index] as ProjectArea).toJson());
+                    }
+                  });
+                },
+                onSaved: (projectAreas) {
+                  setState(() {
+                    if (projectAreas != null) {
+                      this.benificiary['project_areas'] = List.generate(
+                          projectAreas.length,
+                          (index) =>
+                              (projectAreas[index] as ProjectArea).toJson());
+                    }
+                  });
+                },
+              ),
+              LabelComponent(labelText: "Benefício recebido"),
+              MultiSelectComponent(
+                hintText: "Benefício recebido",
+                showSearchBox: true,
+                validator: (items) {
+                  if (items == null)
+                    return "Por favor selecione o benefícios recebido";
+                  else
+                    return null;
+                },
+                mode: Mode.DIALOG,
+                selectedItems: benefits.isNotEmpty
+                    ? (Syncronization.getBenefits()
+                            .values
+                            .toList()
+                            .where((element) {
+                        if (benificiaryForEdit != null) {
+                          return benificiaryForEdit!.benefits.contains(element);
+                        }
+                        return false;
+                      }).isNotEmpty
+                        ? Syncronization.getBenefits()
+                            .values
+                            .toList()
+                            .where((element) {
+                            return benificiaryForEdit!.benefits
+                                .contains(element);
+                          }).toList()
+                        : [])
+                    : [],
+                items: Syncronization.getBenefits().values.toList().isNotEmpty
+                    ? benefits
+                    : <Benefit>[],
+                onChanged: (benefit) {
+                  setState(() {
+                    if (benefit != null) {
+                      this.benificiary['benefits'] = List.generate(
+                          benefit.length,
+                          (index) => (benefit[index] as Benefit).toJson());
+                    }
+                  });
+                },
+                onSaved: (benefit) {
+                  setState(() {
+                    if (benefit != null) {
+                      benefit = benefit as List<Benefit>;
+                      this.benificiary['benefits'] = List.generate(
+                          benefit!.length,
+                          (index) => (benefit![index] as Benefit).toJson());
+                    }
+                  });
+                },
+              ),
+              LabelComponent(labelText: "Fim do inquerito"),
               LabelComponent(labelText: ""),
             ],
           ),
@@ -716,51 +456,57 @@ class _BenificiaryFormState extends State<BenificiaryForm> {
         curve: Curves.easeIn,
         onItemSelected: (index) => setState(() {
           this._currentIndex = index;
-          if (index == 1) {
-            _formKey.currentState!.save();
+          if (_formKey.currentState!.validate()) {
+            if (index == 1) {
+              _formKey.currentState!.save();
 
-            if (this.benificiaryForEdit != null) {
-              if (Syncronization.addUdated(Benificiary.fromJson(benificiary))) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                    'Benificiario Actualizado com sucesso',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.green,
-                ));
-                Navigator.of(context).pop();
+              if (this.benificiaryForEdit != null) {
+                debugPrint(benificiaryForEdit!.toJson().toString());
+                if (Syncronization.addUdated(
+                    Benificiary.fromJson(benificiary))) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      'Benificiario Actualizado com sucesso',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: Colors.green,
+                  ));
+                  Navigator.of(context).pop();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      'Erro ao actualizar benificiario',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: Colors.red,
+                  ));
+                }
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                    'Erro ao actualizar benificiario',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.red,
-                ));
+                debugPrint(benificiary.toString());
+
+                if (Syncronization.addCreated(
+                    Benificiary.fromJson(benificiary))) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      'Benificiario criado com sucesso',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: Colors.green,
+                  ));
+                  Navigator.of(context).pop();
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(
+                      'Erro ao criar benificiario',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: Colors.red,
+                  ));
+                }
               }
             } else {
-              if (Syncronization.addCreated(
-                  Benificiary.fromJson(benificiary))) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                    'Benificiario criado com sucesso',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.green,
-                ));
-                Navigator.of(context).pop();
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                    'Erro ao criar benificiario',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  backgroundColor: Colors.red,
-                ));
-              }
+              Navigator.of(context).pop();
             }
-          } else {
-            Navigator.of(context).pop();
           }
         }),
         items: <BottomNavyBarItem>[

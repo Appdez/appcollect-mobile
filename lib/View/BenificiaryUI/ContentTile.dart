@@ -1,8 +1,6 @@
 
 import '../../Controller/BenificiaryController.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../Model/Benificiary/Benificiary.dart';
 
 class ContentTile extends StatefulWidget {
@@ -24,30 +22,46 @@ class _ContentTileState extends State<ContentTile> {
         Card(
           child: ListTile(
             title: Text(
-              benificiary.fullName != null ? "${benificiary.fullName}" : "",
+              "${benificiary.fullName}",
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
-            subtitle: Text("Nome completo"),
+            subtitle: Text("Nome do participante"),
           ),
         ),
         Card(
           child: ListTile(
             title: Text(
-              Syncronization.getNeighborhoods()
+              Syncronization.getDistricts()
                       .values
                       .where((element) =>
-                          element.uuid == benificiary.neighborhoodUuid)
+                          element.uuid == benificiary.districtUuid)
                       .isNotEmpty
-                  ? Syncronization.getNeighborhoods()
+                  ?  Syncronization.getDistricts()
                       .values
                       .where((element) =>
-                          element.uuid == benificiary.neighborhoodUuid)
+                          element.uuid == benificiary.districtUuid)
                       .first
                       .name
                   : "",
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
+            subtitle: Text("Distrito"),
+          ),
+        ),
+          Card(
+          child: ListTile(
+            title: Text( "${benificiary.zone}",
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
             subtitle: Text("Bairro"),
+          ),
+        ),
+         Card(
+          child: ListTile(
+            title: Text( "${benificiary.location}",
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+            subtitle: Text("Localidade"),
           ),
         ),
         Card(
@@ -71,131 +85,61 @@ class _ContentTileState extends State<ContentTile> {
         Card(
           child: ListTile(
             title: Text(
-              benificiary.phone != null ? "${benificiary.phone}" : "",
+              "${benificiary.age}",
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
-            subtitle: Text("Contacto"),
-            trailing: IconButton(
-                onPressed: () {
-                  launch(benificiary.phone != null
-                      ? "tel:${benificiary.phone}"
-                      : "tel:");
-                },
-                icon: Icon(Icons.call)),
+            subtitle: Text("Idade"),
+          ),
+        ),
+        Card(
+          child: ListTile(
+            title: Text( "${benificiary.qualification}",
+              style: TextStyle(fontWeight: FontWeight.w500),
+            ),
+            subtitle: Text("Qualificacoes academicas/profissionais"),
           ),
         ),
         Card(
           child: ListTile(
             title: Text(
-              benificiary.birthDate != null
-                  ? "${benificiary.birthDate!.day}/${benificiary.birthDate!.month}/${benificiary.birthDate!.year}"
-                  : "",
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-            subtitle: Text("Data de nascimento"),
-          ),
-        ),
-        Card(
-          child: ListTile(
-            title: Text(
-              Syncronization.getProvenances()
+              Syncronization.getProjectAreas()
                       .values
                       .where((element) =>
-                          element.uuid == benificiary.provenaceUuid)
+                          element.uuid == benificiary.projectAreaUuid)
                       .isNotEmpty
-                  ? Syncronization.getProvenances()
+                  ? Syncronization.getProjectAreas()
                       .values
                       .where((element) =>
-                          element.uuid == benificiary.provenaceUuid)
+                          element.uuid == benificiary.projectAreaUuid)
                       .first
                       .name
                   : "",
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
-            subtitle: Text("Proviniência"),
+            subtitle: Text("Area do projecto"),
           ),
         ),
         Card(
           child: ListTile(
             title: Text(
-              Syncronization.getProposeOfVisits()
+              Syncronization.getBenefits()
                       .values
                       .where((element) =>
-                          element.uuid == benificiary.purposeOfVisit)
+                          element.uuid == benificiary.benefitUuid)
                       .isNotEmpty
-                  ? Syncronization.getProposeOfVisits()
+                  ? Syncronization.getBenefits()
                       .values
                       .where((element) =>
-                          element.uuid == benificiary.purposeOfVisit)
+                          element.uuid == benificiary.benefitUuid)
                       .first
                       .name
                   : "",
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
-            subtitle: Text("Objectivo da visita"),
+            subtitle: Text("Beneficio recebido"),
           ),
         ),
-        Card(
-          child: ListTile(
-            title: Text(
-              Syncronization.getReasonsOfOpeningCases()
-                      .values
-                      .where((element) =>
-                          element.uuid == benificiary.reasonOpeningCaseUuid)
-                      .isNotEmpty
-                  ? Syncronization.getReasonsOfOpeningCases()
-                      .values
-                      .where((element) =>
-                          element.uuid == benificiary.reasonOpeningCaseUuid)
-                      .first
-                      .name
-                  : "",
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-            subtitle: Text("Motivo de abertura de processo"),
-          ),
-        ),
-        Card(
-          child: ListTile(
-            title: Text(
-              Syncronization.getDocumentTypes()
-                      .values
-                      .where((element) =>
-                          element.uuid == benificiary.documentTypeUuid)
-                      .isNotEmpty
-                  ? Syncronization.getDocumentTypes()
-                      .values
-                      .where((element) =>
-                          element.uuid == benificiary.documentTypeUuid)
-                      .first
-                      .name
-                  : "",
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-            subtitle: Text("Documentos necessários"),
-          ),
-        ),
-        Card(
-          child: ListTile(
-            title: Text(
-              Syncronization.getForwardedServices()
-                      .values
-                      .where((element) =>
-                          element.uuid == benificiary.forwardedServiceUuid)
-                      .isNotEmpty
-                  ? Syncronization.getForwardedServices()
-                      .values
-                      .where((element) =>
-                          element.uuid == benificiary.forwardedServiceUuid)
-                      .first
-                      .name
-                  : "",
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
-            subtitle: Text("Serviço encaminhado"),
-          ),
-        ),
-      ],
+        ],
     );
   }
 }

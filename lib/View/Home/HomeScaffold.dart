@@ -1,3 +1,9 @@
+import 'package:appcollect/Controller/BenificiaryController.dart';
+import 'package:appcollect/Controller/ServerSyncController.dart';
+import 'package:appcollect/Model/Benificiary/Benificiary.dart';
+import 'package:appcollect/View/BenificiaryForm/BenificiaryForm.dart';
+import 'package:appcollect/View/Home/HomeBody.dart';
+import 'package:appcollect/View/Home/HomeDrawer.dart';
 import 'package:badges/badges.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/foundation.dart';
@@ -5,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:diacritic/diacritic.dart';
+
+import 'BenificiaryListTile.dart';
 
 class HomeScaffold extends StatefulWidget {
   const HomeScaffold(this.index, {Key? key}) : super(key: key);
@@ -17,15 +25,12 @@ class HomeScaffold extends StatefulWidget {
 class _HomeScaffoldState extends State<HomeScaffold> {
   _HomeScaffoldState(this._currentIndex);
   int _currentIndex;
-  String biospName = "";
+  String biospName = "App10 data collect";
   List<Benificiary> benificiaries = <Benificiary>[];
 
   @override
   void initState() {
-    if (Syncronization.getNeighborhoods().isNotEmpty) {
-      biospName =
-          "Bairro de " + Syncronization.getNeighborhoods().values.first.name;
-    }
+   
     benificiaries = Syncronization.sortedBenificiaries();
     super.initState();
   }
@@ -112,7 +117,7 @@ class _HomeScaffoldState extends State<HomeScaffold> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (Syncronization.getNeighborhoods().isNotEmpty) {
+          if (Syncronization.getDistricts().isNotEmpty) {
             Navigator.push(
               context,
               MaterialPageRoute<void>(
@@ -149,9 +154,9 @@ class _HomeScaffoldState extends State<HomeScaffold> {
         setState(() {
           benificiaries = Syncronization.sortedBenificiaries()
               .where((element) =>
-                  removeDiacritics(element.fullName!.toLowerCase())
+                  removeDiacritics(element.fullName.toLowerCase())
                       .contains(removeDiacritics(query.toLowerCase())) ||
-                  removeDiacritics(element.fullName!.toLowerCase())
+                  removeDiacritics(element.fullName.toLowerCase())
                           .compareTo(removeDiacritics(query.toLowerCase())) ==
                       0)
               .toList();

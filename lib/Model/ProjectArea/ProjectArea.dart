@@ -8,20 +8,20 @@ part 'ProjectArea.g.dart';
 @HiveType(typeId: 4)
 class ProjectArea extends Model {
   @HiveField(0)
-  late String? uuid;
+  final String uuid;
 
   @HiveField(1)
-  late String name;
+  final String name;
 
   @HiveField(2)
   @JsonKey(name: 'created_at')
-  late DateTime? createdAt;
+  final DateTime createdAt;
 
   @HiveField(3)
   @JsonKey(name: 'updated_at')
-  late DateTime? updatedAt;
+  final DateTime updatedAt;
   ProjectArea(
-      {this.uuid,
+      {required this.uuid,
       required this.name,
       required this.createdAt,
       required this.updatedAt});

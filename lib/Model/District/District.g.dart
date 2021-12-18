@@ -17,10 +17,10 @@ class DistrictAdapter extends TypeAdapter<District> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return District(
-      uuid: fields[0] as String?,
+      uuid: fields[0] as String,
       name: fields[1] as String,
-      createdAt: fields[2] as DateTime?,
-      updatedAt: fields[3] as DateTime?,
+      createdAt: fields[2] as DateTime,
+      updatedAt: fields[3] as DateTime,
     );
   }
 
@@ -55,20 +55,16 @@ class DistrictAdapter extends TypeAdapter<District> {
 
 District _$DistrictFromJson(Map<String, dynamic> json) {
   return District(
-    uuid: json['uuid'] as String?,
+    uuid: json['uuid'] as String,
     name: json['name'] as String,
-    createdAt: json['created_at'] == null
-        ? null
-        : DateTime.parse(json['created_at'] as String),
-    updatedAt: json['updated_at'] == null
-        ? null
-        : DateTime.parse(json['updated_at'] as String),
+    createdAt: DateTime.parse(json['created_at'] as String),
+    updatedAt: DateTime.parse(json['updated_at'] as String),
   );
 }
 
 Map<String, dynamic> _$DistrictToJson(District instance) => <String, dynamic>{
       'uuid': instance.uuid,
       'name': instance.name,
-      'created_at': instance.createdAt?.toIso8601String(),
-      'updated_at': instance.updatedAt?.toIso8601String(),
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt.toIso8601String(),
     };

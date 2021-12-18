@@ -1,4 +1,7 @@
 
+import 'package:appcollect/Controller/BenificiaryController.dart';
+import 'package:appcollect/Model/Benificiary/Benificiary.dart';
+import 'package:appcollect/View/Home/BenificiaryListTile.dart';
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -127,9 +130,9 @@ class _SyncDataState extends State<SyncData> {
         setState(() {
           this.benificiaries = Syncronization.sortedBenificiaries()
               .where((element) =>
-                  removeDiacritics(element.fullName!.toLowerCase())
+                  removeDiacritics(element.fullName.toLowerCase())
                       .contains(removeDiacritics(query.toLowerCase())) ||
-                  removeDiacritics(element.fullName!.toLowerCase())
+                  removeDiacritics(element.fullName.toLowerCase())
                           .compareTo(removeDiacritics(query.toLowerCase())) ==
                       0)
               .map((e) => BenificiaryListTile(

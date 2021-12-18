@@ -4,6 +4,8 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_annotation/json_annotation.dart';
 import '../Model.dart';
+import '../Benefit/Benefit.dart';
+import '../ProjectArea/ProjectArea.dart';
 part 'Benificiary.g.dart';
 
 @HiveType(typeId: 1)
@@ -14,64 +16,64 @@ class Benificiary extends Model {
 
   @HiveField(1)
   @JsonKey(name: 'full_name')
-  late final String? fullName;
+  final String fullName;
 
   @HiveField(2)
   @JsonKey(name: 'age')
-  late String? age;
+  final int age;
 
   @HiveField(3)
   @JsonKey(name: 'qualification')
-  late String? qualification;
+  final String qualification;
 
   @HiveField(4)
   @JsonKey(name: 'form_number')
-  late String? formNumber;
+  final int formNumber;
 
   @HiveField(5)
   @JsonKey(name: 'zone')
-  late String? zone;
+  final String zone;
 
   @HiveField(6)
   @JsonKey(name: 'location')
-  late String? location;
+  final String location;
 
   @HiveField(7)
   @JsonKey(name: 'district_uuid')
-  late String? districtUuid;
+  final String districtUuid;
 
   @HiveField(8)
-  @JsonKey(name: 'benefit_uuid')
-  late String? benefitUuid;
+  @JsonKey(name: 'benefits')
+  final List<Benefit> benefits;
 
   @HiveField(9)
-  @JsonKey(name: 'project_area_uuid')
-  late String? projectAreaUuid;
+  @JsonKey(name: 'project_areas')
+  final List<ProjectArea> projectAreas;
 
   @HiveField(10)
   @JsonKey(name: 'genre_uuid')
-  late String? genreUuid;
+  final String genreUuid;
 
   @HiveField(11)
   @JsonKey(name: 'created_at')
-  late DateTime createdAt;
+  final DateTime createdAt;
 
   @HiveField(12)
   @JsonKey(name: 'updated_at')
-  late DateTime updatedAt;
+  final DateTime updatedAt;
 
   Benificiary({
     required this.uuid,
-    this.fullName,
-    this.age,
-    this.qualification,
-    this.formNumber,
-    this.zone,
-    this.location,
-    this.districtUuid,
-    this.benefitUuid,
-    this.projectAreaUuid,
-    this.genreUuid,
+    required this.fullName,
+    required this.age,
+    required this.qualification,
+    required this.formNumber,
+    required this.zone,
+    required this.location,
+    required this.districtUuid,
+    required this.benefits,
+    required this.projectAreas,
+    required this.genreUuid,
     required this.createdAt,
     required this.updatedAt,
   });

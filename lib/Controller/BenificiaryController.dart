@@ -1,7 +1,4 @@
-
-
 import 'package:flutter/foundation.dart';
-
 import '../Model/Benificiary/Benificiary.dart';
 import '../Model/Benefit/Benefit.dart';
 import '../Model/District/District.dart';
@@ -26,16 +23,15 @@ class Syncronization {
 
   ///Settings of Aplicattion
   static Box<Benefit> getBenefits() =>
-      Hive.box<Benefit>('benefit');
+      Hive.box<Benefit>('benefits');
 
   static Box<District> getDistricts() =>
-      Hive.box<District>('district');
+      Hive.box<District>('districts');
 
   static Box<Genre> getGenres() => Hive.box<Genre>('genres');
 
   static Box<ProjectArea> getProjectAreas() =>
-      Hive.box<ProjectArea>('project_area');
-
+      Hive.box<ProjectArea>('project_areas');
  
   ///Initialization of box storage
   static Future<void> boot() async {
@@ -53,10 +49,10 @@ class Syncronization {
     await Hive.openBox('token');
 
     ///Settings of Aplicattion
-    await Hive.openBox<Benefit>('benefit');
-    await Hive.openBox<District>('district');
+    await Hive.openBox<Benefit>('benefits');
+    await Hive.openBox<District>('districts');
     await Hive.openBox<Genre>('genres');
-    await Hive.openBox<ProjectArea>('project_area');
+    await Hive.openBox<ProjectArea>('project_areas');
 
   }
 

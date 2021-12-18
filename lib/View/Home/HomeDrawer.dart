@@ -1,4 +1,7 @@
 
+import 'package:appcollect/View/About/About.dart';
+import 'package:appcollect/View/Relatorio/RelatorioDiario.dart';
+import 'package:appcollect/View/SyncData/SyncData.dart';
 import 'package:flutter/material.dart';
 
 class HomeDrawer extends StatelessWidget {
@@ -13,7 +16,7 @@ class HomeDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-              accountName: Text("Biosp Database"),
+              accountName: Text("App10 data collect"),
               accountEmail: Text(biospName),
               decoration: BoxDecoration(
                   image: DecorationImage(

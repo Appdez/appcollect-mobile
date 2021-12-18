@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
         focusColor: Colors.deepPurple,
       ),
       debugShowCheckedModeBanner: false,
-      title: "Biosp Database",
+      title: "App10 Collect",
       home: HomeScaffold(index),
     );
   }

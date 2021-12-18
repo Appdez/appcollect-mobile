@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'package:url_launcher/url_launcher.dart';
 import 'BenificiaryController.dart';
 import '../Model/Benefit/Benefit.dart';
 import '../Model/Benificiary/Benificiary.dart';
 import '../Model/Genre/Genre.dart';
 import '../Model/ProjectArea/ProjectArea.dart';
 import '../Model/District/District.dart';
+
 class ServerSyncController {
   final headers = {
     'Accept': 'application/json',
@@ -17,6 +17,7 @@ class ServerSyncController {
   final baseUrl = "https://www.appio.sumburero.org/api/sync";
 
   Future<bool> getRepport(String bairro) async {
+    /*
     var request =
         http.Request('GET', Uri.parse('${this.baseUrl}/report/$bairro'));
     request.headers.addAll(headers);
@@ -30,7 +31,8 @@ class ServerSyncController {
     } catch (e) {
       //print(e);
       return false;
-    }
+    }*/
+    return true;
   }
 
   Future<bool> settingsOnServer() async {
@@ -52,10 +54,11 @@ class ServerSyncController {
             Syncronization.getGenres().put(element.uuid, element);
           });
 
-          ///Document type sync database
-          var documentTypes = data['document_types'];
-          var listBenefits = List.generate(documentTypes.length, (index) {
-            return Benefit.fromJson(documentTypes[index]);
+          //benefits sync database
+          var benefits = data['benefits'];
+
+          var listBenefits = List.generate(benefits.length, (index) {
+            return Benefit.fromJson(benefits[index]);
           });
           Syncronization.getBenefits()
               .deleteAll(Syncronization.getBenefits().keys);
@@ -63,11 +66,11 @@ class ServerSyncController {
             Syncronization.getBenefits().put(element.uuid, element);
           });
 
-          ///forwarded_services  sync database
-          var forwardedServices = data['forwarded_services'];
-          var listDistricts =
-              List.generate(forwardedServices.length, (index) {
-            return District.fromJson(forwardedServices[index]);
+          ///districts  sync database
+          var districts = data['districts'];
+
+          var listDistricts = List.generate(districts.length, (index) {
+            return District.fromJson(districts[index]);
           });
           Syncronization.getDistricts()
               .deleteAll(Syncronization.getDistricts().keys);
@@ -76,10 +79,11 @@ class ServerSyncController {
             Syncronization.getDistricts().put(element.uuid, element);
           });
 
-          ///neighborhoods  sync database
-          var neighborhoods = data['neighborhoods'];
-          var listProjectAreas = List.generate(neighborhoods.length, (index) {
-            return ProjectArea.fromJson(neighborhoods[index]);
+          ///project_areas  sync database
+          var projectAreas = data['project_areas'];
+
+          var listProjectAreas = List.generate(projectAreas.length, (index) {
+            return ProjectArea.fromJson(projectAreas[index]);
           });
           Syncronization.getProjectAreas()
               .deleteAll(Syncronization.getProjectAreas().keys);
@@ -88,31 +92,53 @@ class ServerSyncController {
             Syncronization.getProjectAreas().put(element.uuid, element);
           });
 
-         
           //benificiaries
 
-          var benificiaries = data['benificiaries'];
-
-          var listBenificiaries = List.generate(benificiaries.length, (index) {
-            benificiaries[index]['number_of_visits'] =
-                benificiaries[index]['number_of_visits'] != null
-                    ? "${benificiaries[index]['number_of_visits']}"
+          var benificiariesxs = data['benificiaries'];
+          var listBenificiaries = List.generate(benificiariesxs.length, (index) {
+            var benificiaries = benificiariesxs[index];
+            benificiaries['full_name'] = benificiaries['full_name'] != null
+                ? benificiaries['full_name']
+                : "";
+            benificiaries['age'] =
+                benificiaries['age'] != null ? benificiaries['age'] : 0;
+            benificiaries['qualification'] =
+                benificiaries['qualification'] != null
+                    ? benificiaries['qualification']
                     : "";
-
-            benificiaries[index]['phone'] =
-                benificiaries[index]['phone'] != null
-                    ? '${benificiaries[index]["phone"]}'
-                    : ""; //
-            return Benificiary.fromJson(benificiaries[index]);
+            benificiaries['form_number'] = benificiaries['form_number'] != null
+                ? benificiaries['form_number']
+                : 0;
+            benificiaries['zone'] =
+                benificiaries['zone'] != null ? benificiaries['zone'] : "";
+            benificiaries['location'] = benificiaries['location'] != null
+                ? benificiaries['location']
+                : "";
+            benificiaries['district_uuid'] =
+                benificiaries['district_uuid'] != null
+                    ? benificiaries['district_uuid']
+                    : "";
+            benificiaries['benefit_uuid'] =
+                benificiaries['benefit_uuid'] != null
+                    ? benificiaries['benefit_uuid']
+                    : "";
+            benificiaries['project_area_uuid'] =
+                benificiaries['project_area_uuid'] != null
+                    ? benificiaries['project_area_uuid']
+                    : "";
+            benificiaries['genre_uuid'] = benificiaries['genre_uuid'] != null
+                ? benificiaries['genre_uuid']
+                : "";
+            return Benificiary.fromJson(benificiaries);
           });
           Syncronization.getBeneficiaries()
               .deleteAll(Syncronization.getBeneficiaries().keys);
-
           listBenificiaries.forEach((element) {
             Syncronization.getBeneficiaries().put(element.uuid, element);
           });
           return true;
         } catch (e) {
+          //   throw e;
           //print("1. $e");
           return false;
         }
@@ -121,6 +147,7 @@ class ServerSyncController {
         return false;
       }
     } catch (e) {
+      // throw e;
       return false;
     }
   }
@@ -148,10 +175,12 @@ class ServerSyncController {
           });
           return true;
         } catch (e) {
+//          throw e;
           return false;
         }
       }
     } catch (e) {
+      //    throw e;
       //throw e;
       // print("4. $e");
       return false;
@@ -183,11 +212,13 @@ class ServerSyncController {
           });
           return true;
         } catch (e) {
+          //      throw e;
           //      print("5. $e");
           return false;
         }
       }
     } catch (e) {
+      //throw e;
       // print("6. $e");
       return false;
     }
@@ -218,11 +249,13 @@ class ServerSyncController {
           });
           return true;
         } catch (e) {
+          //  throw e;
           // print("7. $e");
           return false;
         }
       }
     } catch (e) {
+      //throw e;
       //print("8. $e");
       return false;
     }

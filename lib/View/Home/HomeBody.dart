@@ -1,4 +1,6 @@
 
+import 'package:appcollect/Controller/BenificiaryController.dart';
+import 'package:appcollect/Model/Benificiary/Benificiary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';

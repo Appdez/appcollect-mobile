@@ -1,21 +1,20 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-//import 'dart:collection';
 
-// ignore: must_be_immutable
-class SelectComponent<T> extends StatelessWidget {
-  SelectComponent(
+class MultiSelectComponent<T> extends StatelessWidget {
+  MultiSelectComponent(
       {Key? key,
       required this.hintText,
       required this.items,
       this.showSearchBox = false,
       this.onSaved,
       this.onChanged,
+      this.controller,
       this.mode = Mode.MENU,
       this.label,
-      this.onFocus,
       this.itemAsString,
-      this.selectedItem,
+      this.onFocus,
+      required this.selectedItems,
       this.validator})
       : super(key: key);
   final String hintText;
@@ -23,23 +22,24 @@ class SelectComponent<T> extends StatelessWidget {
   final bool showSearchBox;
   final Mode mode;
   final String? label;
-  void Function(T?)? onSaved;
-  void Function(T?)? onChanged;
+  void Function(List<T>?)? onSaved;
+  void Function(List<T>?)? onChanged;
+  TextEditingController? controller;
   String Function(T?)? itemAsString;
-  String? Function(T?)? validator;
+  String? Function(List<T>?)? validator;
+  List<T> selectedItems;
   FocusNode? onFocus;
-  var selectedItem;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(left: 35, right: 35, top: 10),
-        child: DropdownSearch<T>(
+        child: DropdownSearch<T>.multiSelection(
           mode: mode,
           items: items,
           focusNode: onFocus,
           showSearchBox: showSearchBox,
-          selectedItem: selectedItem != null ? selectedItem : null,
+          selectedItems: selectedItems,
           onChanged: onChanged,
           onSaved: onSaved,
           itemAsString: itemAsString,
